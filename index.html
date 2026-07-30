@@ -3,14 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Orgest Likaj — Senior QA Engineer & QA Lead</title>
-<meta name="description" content="Orgest Likaj — Senior QA Engineer / QA Lead based in Vienna, Austria. 7+ years driving quality across SaaS, mobility, e-government, and banking products. Specialist in test automation, API validation, and performance testing." />
+<title>Orgest Likaj — Senior QA Engineer & QA Lead | Vienna</title>
+<meta name="description" content="Orgest Likaj — Senior QA Engineer / QA Lead in Vienna, Austria. 7+ years driving quality across SaaS, mobility, e-government & banking. Test automation, API validation, and performance testing with Selenium, Cypress, Maestro, Postman, JMeter & k6." />
 <meta name="author" content="Orgest Likaj" />
+<meta name="keywords" content="Orgest Likaj, Senior QA Engineer, QA Lead, Test Automation, Selenium, Cypress, Maestro, API Testing, Performance Testing, ISTQB, Vienna, Austria, Quality Assurance" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#0a0e17" />
+<link rel="canonical" href="https://orgestlikaj.github.io/portfolio/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230a0e17'/%3E%3Ctext%20x='50'%20y='70'%20font-family='Arial,sans-serif'%20font-size='52'%20font-weight='bold'%20text-anchor='middle'%20fill='%2338e1c4'%3EOL%3C/text%3E%3C/svg%3E" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Orgest Likaj" />
+<meta property="og:url" content="https://orgestlikaj.github.io/portfolio/" />
 <meta property="og:title" content="Orgest Likaj — Senior QA Engineer & QA Lead" />
 <meta property="og:description" content="7+ years driving quality across SaaS, mobility, e-government, and banking. Test automation, API validation & performance testing specialist based in Vienna." />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Orgest Likaj — Senior QA Engineer & QA Lead" />
+<meta name="twitter:description" content="7+ years driving quality across SaaS, mobility, e-government, and banking. Test automation, API & performance testing specialist based in Vienna." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -342,6 +355,42 @@
     .reveal { opacity: 1; transform: none; transition: none; }
   }
 </style>
+
+<!-- Structured data: Person (schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Orgest Likaj",
+  "jobTitle": "Senior QA Engineer / QA Lead",
+  "description": "Senior QA Engineer and QA Lead with 7+ years driving quality across SaaS, mobility, e-government, and banking products. Specialist in test automation, API validation, and performance testing.",
+  "url": "https://orgestlikaj.github.io/portfolio/",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Vienna",
+    "addressCountry": "AT"
+  },
+  "nationality": "Albanian",
+  "knowsLanguage": ["English", "Albanian", "Italian"],
+  "sameAs": [
+    "https://www.linkedin.com/in/orgestlikaj/",
+    "https://github.com/OrgestLikaj"
+  ],
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Canadian Institute of Technology"
+  },
+  "hasCredential": [
+    { "@type": "EducationalOccupationalCredential", "name": "ISTQB Foundation Level (CTFL)" },
+    { "@type": "EducationalOccupationalCredential", "name": "Certified Software Test Engineer (CSTE)" }
+  ],
+  "knowsAbout": [
+    "Test Automation", "Quality Assurance", "Selenium WebDriver", "Cypress", "Maestro",
+    "API Testing", "Performance Testing", "Regression Testing", "BDD", "Postman",
+    "JMeter", "k6", "Java", "JavaScript", "TypeScript", "CI/CD", "Agile"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -402,13 +451,14 @@
     <!-- STATS -->
     <div class="stats">
       <div class="stat reveal"><div class="num" data-count="7">7+</div><div class="label">Years in QA & testing</div></div>
-      <div class="stat reveal"><div class="num" data-count="2000">2000+</div><div class="label">Automated tests built</div></div>
+      <div class="stat reveal"><div class="num" data-count="10000">10,000+</div><div class="label">Automated tests built</div></div>
       <div class="stat reveal"><div class="num" data-count="350">350+</div><div class="label">Engineers trained</div></div>
       <div class="stat reveal"><div class="num" data-count="80">80%</div><div class="label">Peak automation coverage</div></div>
     </div>
   </div>
 </header>
 
+<main>
 <!-- ================= ABOUT ================= -->
 <section id="about">
   <div class="wrap">
@@ -735,6 +785,7 @@
     </div>
   </div>
 </section>
+</main>
 
 <!-- ================= FOOTER ================= -->
 <footer>
@@ -781,7 +832,7 @@
   // Count-up stats
   const animateCount = (el) => {
     const target = parseInt(el.dataset.count, 10);
-    const suffix = el.textContent.replace(/[0-9]/g, '');
+    const suffix = el.textContent.replace(/[0-9,]/g, '');
     const dur = 1400, start = performance.now();
     const step = (now) => {
       const p = Math.min((now - start) / dur, 1);
