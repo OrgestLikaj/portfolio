@@ -63,6 +63,18 @@ name *Studio Ligjore Gega*, phone *+355 68 201 0636*, email *gentjangega.lawoffi
 
 ---
 
+## 1b. Preview on GitHub Pages
+
+A static preview is published at **https://orgestlikaj.github.io/portfolio/gega-preview/**
+(folder `gega-preview/` on the `main` branch of the portfolio repository; no other portfolio file was changed).
+
+* Built with `npm run build:preview` (sets `BASE_PATH=/portfolio/gega-preview`, `PUBLIC_PREVIEW=true`).
+* A banner marks it as a preview; pages are `noindex`.
+* GitHub Pages cannot run the server, so **forms validate but never send** – they show a message with the
+  phone number and email instead.
+* To update it: `npm run build:preview`, replace `gega-preview/` on `main` with `dist/client/`, commit, push.
+* To remove it: delete the `gega-preview/` folder on `main`.
+
 ## 2. Recommended hosting
 
 I could not inspect the current DNS/hosting of `gegaattorney.al` (this environment's network policy blocks
