@@ -5,6 +5,7 @@
 import { site, confirmed, lawyerWord } from '../config/site.ts';
 import { services } from '../config/services.ts';
 import { routes, serviceUrl } from '../config/navigation.ts';
+import { withBase } from './url.ts';
 
 /** Indeksimi lejohet vetëm kur ALLOW_INDEXING=true gjatë build-it (p.sh. në prodhim pas miratimit). */
 export const indexingAllowed = process.env.ALLOW_INDEXING === 'true';
@@ -63,7 +64,7 @@ export function practiceLd(base: URL | undefined) {
     name,
     jobTitle: lawyerWord.Indef,
     url: absolute(routes.about, base),
-    ...(site.portrait.src ? { image: absolute(site.portrait.src, base) } : {}),
+    ...(site.portrait.src ? { image: absolute(withBase(site.portrait.src), base) } : {}),
   };
 
   return {
@@ -76,7 +77,7 @@ export function practiceLd(base: URL | undefined) {
     areaServed: { '@type': 'Country', name: 'Shqipëri' },
     availableLanguage: 'sq',
     founder: person,
-    ...(site.logo.png ? { logo: absolute(site.logo.png, base), image: absolute(site.logo.png, base) } : {}),
+    ...(site.logo.png ? { logo: absolute(withBase(site.logo.png), base), image: absolute(withBase(site.logo.png), base) } : {}),
     ...(phone ? { telephone: phone } : {}),
     ...(email ? { email } : {}),
     ...(address ? { address } : {}),

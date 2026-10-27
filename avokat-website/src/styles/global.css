@@ -97,6 +97,13 @@ a:hover { color: var(--bronze); }
 }
 .skip-link:focus { top: 16px; color: var(--ivory); }
 
+/* ---------- Shiriti i versionit paraprak ---------- */
+.preview-bar {
+  background: #8a611c; color: #fff;
+  font-size: 0.82rem; text-align: center;
+  padding: 8px 16px; line-height: 1.4;
+}
+
 /* ---------- Struktura ---------- */
 .container {
   width: 100%;

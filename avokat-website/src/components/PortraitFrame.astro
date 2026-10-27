@@ -1,5 +1,6 @@
 ---
 import { site, isPlaceholder, lawyerWord } from '../config/site.ts';
+import { withBase } from '../lib/url.ts';
 const hasPortrait = Boolean(site.portrait.src);
 const alt = isPlaceholder(site.lawyerName)
   ? `Portret profesional i ${lawyerWord.gen}`
@@ -8,7 +9,7 @@ const alt = isPlaceholder(site.lawyerName)
 <figure class="portrait">
   {
     hasPortrait ? (
-      <img src={site.portrait.src} width={site.portrait.width} height={site.portrait.height} alt={alt} loading="lazy" decoding="async" />
+      <img src={withBase(site.portrait.src)} width={site.portrait.width} height={site.portrait.height} alt={alt} loading="lazy" decoding="async" />
     ) : (
       <div class="portrait__placeholder">
         <span class="ph" data-placeholder>[PORTRETI PROFESIONAL, NËSE OFROHET]</span>

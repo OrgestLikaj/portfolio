@@ -6,7 +6,7 @@ import { services } from '../config/services.ts';
 import { serviceUrl } from '../config/navigation.ts';
 
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const isCurrent = (href: string) => (href === routes.home ? path === href : path.startsWith(href));
 ---
 <header class="site-header" data-header>
   <div class="container site-header__inner">

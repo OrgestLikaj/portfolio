@@ -1,14 +1,15 @@
 import { lawyerWord } from './site.ts';
+import { withBase } from '../lib/url.ts';
 
 export const routes = {
-  home: '/',
-  about: '/rreth-avokatit/',
-  services: '/sherbimet/',
-  booking: '/rezervo-konsulte/',
-  contact: '/kontakti/',
-  privacy: '/politika-e-privatesise/',
-  legal: '/njoftimi-ligjor/',
-  cookies: '/politika-e-cookies/',
+  home: withBase('/'),
+  about: withBase('/rreth-avokatit/'),
+  services: withBase('/sherbimet/'),
+  booking: withBase('/rezervo-konsulte/'),
+  contact: withBase('/kontakti/'),
+  privacy: withBase('/politika-e-privatesise/'),
+  legal: withBase('/njoftimi-ligjor/'),
+  cookies: withBase('/politika-e-cookies/'),
 } as const;
 
 export const serviceUrl = (slug: string) => `${routes.services}${slug}/`;

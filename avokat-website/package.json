@@ -15,7 +15,8 @@
     "test:e2e": "node tests/e2e/run.mjs",
     "audit:placeholders": "node scripts/audit-placeholders.mjs",
     "test": "npm run test:unit && npm run build && npm run test:e2e",
-    "images": "node --experimental-strip-types --no-warnings scripts/generate-images.mjs"
+    "images": "node --experimental-strip-types --no-warnings scripts/generate-images.mjs",
+    "build:preview": "SITE_URL=https://orgestlikaj.github.io BASE_PATH=/portfolio/gega-preview PUBLIC_PREVIEW=true astro build"
   },
   "dependencies": {
     "@astrojs/node": "^11.1.9",

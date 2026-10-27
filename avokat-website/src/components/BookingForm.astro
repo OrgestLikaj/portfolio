@@ -5,12 +5,14 @@ import { serviceOptions } from '../config/services.ts';
 import { site } from '../config/site.ts';
 import { routes } from '../config/navigation.ts';
 import { LIMITS } from '../lib/validation.ts';
+import { withBase, IS_PREVIEW } from '../lib/url.ts';
 ---
 <div class="form-wrap" data-form-wrap>
   <form
     class="form"
     data-form="booking"
-    action="/api/rezervim/"
+    action={withBase('/api/rezervim/')}
+    data-preview={IS_PREVIEW ? 'true' : undefined}
     method="post"
     novalidate
     aria-describedby="booking-intro"

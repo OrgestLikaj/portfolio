@@ -5,10 +5,14 @@
  */
 import { validateBooking, validateContact, dateIssueMessage, type Errors } from '../lib/validation.ts';
 import { bookingWindow, checkDate, slotsFor } from '../lib/availability.ts';
+import { withBase } from '../lib/url.ts';
+import { site } from '../config/site.ts';
 
 type Kind = 'contact' | 'booking';
 
-const ENDPOINT: Record<Kind, string> = { contact: '/api/kontakt/', booking: '/api/rezervim/' };
+const ENDPOINT: Record<Kind, string> = { contact: withBase('/api/kontakt/'), booking: withBase('/api/rezervim/') };
+
+const PREVIEW_MSG = `Ky është një version paraprak i faqes: të dhënat janë të vlefshme, por kërkesa NUK u dërgua. Për kontakt: ${site.contact.phoneDisplay} ose ${site.contact.email}.`;
 
 const NETWORK_ERROR =
   'Nuk u arrit lidhja me serverin. Kontrolloni lidhjen me internetin dhe provoni përsëri, ose më kontaktoni drejtpërdrejt.';
@@ -20,7 +24,7 @@ function newRequestId(): string {
 
 async function fetchToken(): Promise<string | null> {
   try {
-    const res = await fetch('/api/form-token/', { cache: 'no-store', headers: { Accept: 'application/json' } });
+    const res = await fetch(withBase('/api/form-token/'), { cache: 'no-store', headers: { Accept: 'application/json' } });
     if (!res.ok) return null;
     const body = (await res.json()) as { token?: string };
     return body.token ?? null;
@@ -47,8 +51,12 @@ export function initForm(form: HTMLFormElement, kind: Kind) {
   const resetBtn = wrap.querySelector<HTMLButtonElement>('[data-reset]');
   const idleLabel = submitLabel.textContent ?? '';
 
+  // Versioni paraprak statik (p.sh. GitHub Pages) nuk ka server: formulari validohet, por nuk dërgohet.
+  const preview = form.dataset.preview === 'true';
+  const getToken = () => (preview ? Promise.resolve(null) : fetchToken());
+
   let token: string | null = null;
-  let tokenPromise: Promise<string | null> = fetchToken().then((t) => (token = t));
+  let tokenPromise: Promise<string | null> = getToken().then((t) => (token = t));
   let requestId = newRequestId();
   let busy = false;
   let attempted = false;
@@ -265,6 +273,11 @@ export function initForm(form: HTMLFormElement, kind: Kind) {
       return;
     }
 
+    if (preview) {
+      setStatus(PREVIEW_MSG, 'info');
+      return;
+    }
+
     setBusy(true);
     try {
       if (!token) token = await tokenPromise;
@@ -284,7 +297,7 @@ export function initForm(form: HTMLFormElement, kind: Kind) {
     attempted = false;
     requestId = newRequestId();
     token = null;
-    tokenPromise = fetchToken().then((t) => (token = t));
+    tokenPromise = getToken().then((t) => (token = t));
     showErrors({});
     setStatus('');
     form.querySelectorAll<HTMLTextAreaElement>('textarea[data-counter]').forEach((ta) =>

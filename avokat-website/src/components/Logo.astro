@@ -5,6 +5,7 @@
  * prandaj emri shfaqet edhe si tekst.
  */
 import { site, isPlaceholder, lawyerWord } from '../config/site.ts';
+import { withBase } from '../lib/url.ts';
 
 interface Props {
   variant?: 'dark' | 'light';
@@ -18,7 +19,7 @@ const namePh = isPlaceholder(site.lawyerName);
   {
     hasLogo ? (
       <img
-        src={site.logo.src}
+        src={withBase(site.logo.src)}
         width={site.logo.width}
         height={site.logo.height}
         alt={`Logoja e ${site.practiceName}`}

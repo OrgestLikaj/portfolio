@@ -1,10 +1,11 @@
 ---
 /** Vula e studios në format të madh, në një kornizë të qetë. */
 import { site } from '../config/site.ts';
+import { withBase } from '../lib/url.ts';
 ---
 <figure class="seal">
   <img
-    src={site.logo.srcLarge}
+    src={withBase(site.logo.srcLarge)}
     width="560"
     height="560"
     alt={`Vula e ${site.practiceName} – Av. ${site.lawyerName}`}
