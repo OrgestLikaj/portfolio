@@ -1,0 +1,35 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { routes } from '../config/navigation.ts';
+---
+<LegalLayout
+  title="Politika e cookies"
+  description="Informacion për përdorimin e cookies dhe të teknologjive të ngjashme në këtë faqe interneti."
+  path={routes.cookies}
+>
+  <h2>A përdor kjo faqe cookies?</h2>
+  <p>
+    Jo. Në konfigurimin aktual, kjo faqe nuk vendos cookies në pajisjen tuaj dhe nuk përdor mjete analitike,
+    reklamuese ose të gjurmimit, as të vetat, as të palëve të treta.
+  </p>
+
+  <h2>Fontet dhe burimet e jashtme</h2>
+  <p>
+    Fontet dhe skedarët e tjerë të faqes shërbehen nga i njëjti server, pa lidhje me shërbime të jashtme si
+    Google Fonts. Lidhjet drejt faqeve të tjera (p.sh. për udhëzime në hartë) hapen vetëm kur klikoni mbi to; në
+    atë rast zbatohen politikat e privatësisë së atyre faqeve.
+  </p>
+
+  <h2>Formularët</h2>
+  <p>
+    Për mbrojtjen nga dërgimet automatike, formularët marrin një kod të përkohshëm sigurie nga serveri. Ky kod
+    nuk ruhet si cookie dhe nuk përdoret për t’ju identifikuar. Për mënyrën si përpunohen të dhënat e formularëve,
+    shihni <a href={routes.privacy}>Politikën e privatësisë</a>.
+  </p>
+
+  <h2>Ndryshimet</h2>
+  <p>
+    Nëse në të ardhmen shtohen cookies jo të domosdoshme ose mjete analitike, kjo politikë do të përditësohet dhe,
+    kur kërkohet, do t’ju kërkohet pëlqimi përpara se ato të aktivizohen.
+  </p>
+</LegalLayout>

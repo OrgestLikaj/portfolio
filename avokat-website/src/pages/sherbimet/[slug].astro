@@ -1,0 +1,115 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services, getService, type Service } from '../../config/services.ts';
+import { routes, serviceUrl } from '../../config/navigation.ts';
+import { lawyerWord } from '../../config/site.ts';
+
+export const getStaticPaths = (() =>
+  services.map((service) => ({ params: { slug: service.slug }, props: { service } }))) satisfies GetStaticPaths;
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+const related = service.related.map(getService).filter((s): s is Service => Boolean(s));
+const crumbs = [
+  { label: 'Kryefaqja', href: routes.home },
+  { label: 'Shërbimet', href: routes.services },
+  { label: service.title, href: serviceUrl(service.slug) },
+];
+const bookingHref = `${routes.booking}?sherbimi=${service.slug}`;
+---
+<BaseLayout title={service.seoTitle} description={service.metaDescription} breadcrumbs={crumbs}>
+  <PageHero eyebrow="Shërbimet juridike" title={service.title} lede={service.summary} breadcrumbs={crumbs}>
+    <div class="btn-row service-hero__actions">
+      <a class="btn btn--light" href={bookingHref}>Kërko një konsultë <Icon name="arrow" class="arrow" /></a>
+      <a class="btn btn--ghost-light" href={routes.contact}>Kontakto {lawyerWord.acc}</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container service-body">
+      <div class="prose">
+        <h2>Përshkrim i shërbimit</h2>
+        {service.intro.map((p) => <p>{p}</p>)}
+
+        <h2>Kur mund t’ju duhet ky shërbim</h2>
+        <ul class="check-list">
+          {service.situations.map((s) => <li>{s}</li>)}
+        </ul>
+
+        <h2>Si mund t’ju ndihmoj</h2>
+        <ul class="check-list">
+          {service.assistance.map((s) => <li>{s}</li>)}
+        </ul>
+
+        <p class="service-disclaimer small muted">
+          Shembujt e mësipërm janë ilustrues. Mënyra e trajtimit varet nga rrethanat konkrete të çështjes, të
+          cilat vlerësohen gjatë konsultës. Asnjë rezultat nuk mund të garantohet paraprakisht.
+        </p>
+      </div>
+
+      <aside class="service-aside" aria-label="Kërkoni një konsultë">
+        <div class="service-aside__card">
+          <h2 class="service-aside__title">Diskutoni çështjen tuaj</h2>
+          <p class="muted">
+            Gjatë konsultës vlerësojmë situatën tuaj dhe hapat e mundshëm. Takimi konfirmohet pasi t’ju kontaktoj.
+          </p>
+          <a class="btn" href={bookingHref}>Rezervo një konsultë <Icon name="arrow" class="arrow" /></a>
+        </div>
+
+        {
+          related.length > 0 && (
+            <nav class="service-aside__related" aria-label="Shërbime të ngjashme">
+              <h2 class="service-aside__label">Shërbime të ngjashme</h2>
+              <ul>
+                {related.map((r) => (
+                  <li>
+                    <a href={serviceUrl(r.slug)}>
+                      {r.title} <Icon name="arrow" size={16} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
+      </aside>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .service-hero__actions { margin-top: 36px; }
+  .service-body { display: grid; gap: 64px; }
+  @media (min-width: 1000px) {
+    .service-body { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 96px; align-items: start; }
+    .service-aside { position: sticky; top: 112px; }
+  }
+  .service-disclaimer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--stone); }
+  .service-aside { display: grid; gap: 40px; }
+  .service-aside__card {
+    background: var(--ivory); border: 1px solid var(--stone);
+    padding: 32px; display: grid; gap: 16px;
+  }
+  .service-aside__title { font-size: 1.75rem; }
+  .service-aside__card .btn { width: 100%; }
+  .service-aside__label {
+    font-family: var(--font-text); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze); margin-bottom: 12px;
+  }
+  .service-aside__related ul { list-style: none; margin: 0; padding: 0; }
+  .service-aside__related a {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid var(--stone); text-decoration: none;
+    font-family: var(--font-display); font-size: 1.3rem;
+  }
+  .service-aside__related a :global(svg) { color: var(--bronze); transition: transform 0.3s var(--ease); }
+  .service-aside__related a:hover :global(svg) { transform: translateX(4px); }
+</style>

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ContactDetails from '../components/ContactDetails.astro';
+import Icon from '../components/Icon.astro';
+import Ph from '../components/Ph.astro';
+import { routes } from '../config/navigation.ts';
+import { site, lawyerWord } from '../config/site.ts';
+
+const crumbs = [
+  { label: 'Kryefaqja', href: routes.home },
+  { label: 'Kontakti', href: routes.contact },
+];
+---
+<BaseLayout
+  title="Kontakti"
+  description={`Kontaktoni ${lawyerWord.acc} me telefon, email ose përmes formularit. Adresa e zyrës, orari dhe mundësia për të rezervuar një konsultë.`}
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    eyebrow="Kontakti"
+    title="Si të më kontaktoni"
+    lede="Për pyetje të përgjithshme përdorni formularin më poshtë. Për të caktuar një takim, mund të dërgoni drejtpërdrejt një kërkesë për konsultë."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row contact-hero__actions">
+      <a class="btn btn--light" href={routes.booking}>Rezervo një konsultë <Icon name="arrow" class="arrow" /></a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__info">
+        <h2 class="contact__heading">Zyra</h2>
+        <p class="contact__name"><Ph value={site.lawyerName} />, {lawyerWord.indef}</p>
+        <ContactDetails />
+        {
+          !site.contact.directionsUrl && (
+            <p class="small muted contact__map-note">
+              <Ph value="[LIDHJA PËR UDHËZIME / HARTA – SHTOHET PASI TË KONFIRMOHET ADRESA]" />
+            </p>
+          )
+        }
+      </div>
+
+      <div class="contact__form">
+        <h2 class="contact__heading">Dërgoni një mesazh</h2>
+        <div class="notice contact__notice">
+          <Icon name="lock" />
+          <p>
+            <strong>Mos dërgoni informacion konfidencial.</strong> Formulari shërben për pyetje të përgjithshme.
+            Dërgimi i një mesazhi nuk krijon marrëdhënie avokat–klient.
+          </p>
+        </div>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-hero__actions { margin-top: 36px; }
+  .contact { display: grid; gap: 72px; }
+  @media (min-width: 1000px) {
+    .contact { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 96px; align-items: start; }
+  }
+  .contact__heading { font-size: clamp(1.9rem, 3vw, 2.4rem); margin-bottom: 20px; }
+  .contact__name { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 24px; }
+  .contact__map-note { margin-top: 20px; }
+  .contact__notice { margin-bottom: 32px; }
+</style>

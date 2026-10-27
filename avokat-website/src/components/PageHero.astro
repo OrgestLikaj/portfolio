@@ -1,0 +1,33 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import type { Crumb } from '../lib/seo.ts';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  breadcrumbs?: Crumb[];
+}
+const { eyebrow, title, lede, breadcrumbs } = Astro.props;
+---
+<section class="page-hero on-dark">
+  <div class="page-hero__lines" aria-hidden="true"></div>
+  <div class="container">
+    {breadcrumbs && breadcrumbs.length > 1 && <Breadcrumbs items={breadcrumbs} />}
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {lede && <p class="lede">{lede}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-hero__lines {
+    position: absolute; inset: 0 0 0 auto; width: min(42vw, 560px);
+    background-image: repeating-linear-gradient(90deg, rgba(214, 169, 79, 0.14) 0 1px, transparent 1px 56px);
+    mask-image: linear-gradient(90deg, transparent, #000 60%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 60%);
+    pointer-events: none;
+  }
+  .container { position: relative; }
+</style>

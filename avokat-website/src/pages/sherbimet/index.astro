@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services } from '../../config/services.ts';
+import { routes, serviceUrl } from '../../config/navigation.ts';
+
+const crumbs = [
+  { label: 'Kryefaqja', href: routes.home },
+  { label: 'Shërbimet', href: routes.services },
+];
+---
+<BaseLayout
+  title="Shërbimet juridike"
+  description="Shërbime juridike në Shqipëri: çështje penale, civile, administrative, tregtare dhe biznesi, përfaqësim gjyqësor dhe konsulencë juridike."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    eyebrow="Shërbimet juridike"
+    title="Asistencë ligjore e përshtatur me situatën tuaj"
+    lede="Çdo çështje ligjore ka rrethanat e veta. Më poshtë gjeni fushat kryesore ku ofroj këshillim dhe përfaqësim, si dhe shembuj të situatave ku mund t’ju ndihmoj."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="container">
+      <ul class="service-grid">
+        {
+          services.map((s, i) => (
+            <li class="reveal">
+              <a href={serviceUrl(s.slug)} class="service-card">
+                <span class="service-card__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h2 class="service-card__title">{s.title}</h2>
+                <p>{s.summary}</p>
+                <span class="service-card__more">
+                  Mëso më shumë <Icon name="arrow" class="arrow" size={16} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <aside class="notice services-note" aria-label="Shënim">
+        <Icon name="info" />
+        <p>
+          Nëse nuk jeni të sigurt se në cilën fushë bën pjesë çështja juaj, zgjidhni opsionin
+          <strong> “Tjetër / nuk e di ende”</strong> në formularin e rezervimit. Gjatë konsultës do ta
+          vlerësojmë së bashku.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .service-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 1px; background: var(--stone);
+    border: 1px solid var(--stone);
+  }
+  @media (min-width: 720px) { .service-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .service-grid { grid-template-columns: repeat(3, 1fr); } }
+  .service-card {
+    display: flex; flex-direction: column; gap: 14px; height: 100%;
+    padding: clamp(28px, 3.5vw, 44px);
+    background: var(--paper); text-decoration: none;
+    transition: background-color 0.4s var(--ease);
+  }
+  .service-card:hover { background: var(--ivory); color: var(--ink); }
+  .service-card__num { font-size: 0.8rem; letter-spacing: 0.1em; color: var(--bronze); }
+  .service-card__title { font-size: clamp(1.6rem, 2.4vw, 2rem); }
+  .service-card p { color: var(--muted); flex: 1; }
+  .service-card__more {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 500; font-size: 0.95rem;
+  }
+  .service-card:hover .arrow { transform: translateX(4px); }
+  .services-note { margin-top: 48px; max-width: 760px; }
+</style>

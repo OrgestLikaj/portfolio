@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PortraitFrame from '../components/PortraitFrame.astro';
+import Ph from '../components/Ph.astro';
+import Icon from '../components/Icon.astro';
+import { routes, serviceUrl } from '../config/navigation.ts';
+import { services } from '../config/services.ts';
+import { site, lawyerWord, isPlaceholder } from '../config/site.ts';
+
+const crumbs = [
+  { label: 'Kryefaqja', href: routes.home },
+  { label: `Rreth ${lawyerWord.gen}`, href: routes.about },
+];
+const name = isPlaceholder(site.lawyerName) ? null : site.lawyerName;
+---
+<BaseLayout
+  title={`Rreth ${lawyerWord.gen}`}
+  description={`Njihuni me ${lawyerWord.acc}: formimi, përvoja profesionale dhe qasja ndaj klientëve në një praktikë ligjore individuale në Shqipëri.`}
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    eyebrow={`Rreth ${lawyerWord.gen}`}
+    title={name ?? 'Një qasje personale ndaj çdo çështjeje ligjore'}
+    breadcrumbs={crumbs}
+  >
+    {
+      name ? (
+        <p class="lede">Një qasje personale ndaj çdo çështjeje ligjore.</p>
+      ) : (
+        <p class="lede"><Ph value={site.lawyerName} /></p>
+      )
+    }
+  </PageHero>
+
+  <section class="section">
+    <div class="container about">
+      <div class="about__aside">
+        <PortraitFrame />
+        <dl class="about__facts">
+          <div>
+            <dt>Profesioni</dt>
+            <dd>{lawyerWord.Indef}</dd>
+          </div>
+          <div>
+            <dt>Studio</dt>
+            <dd>{site.practiceName}</dd>
+          </div>
+          <div>
+            <dt>Regjistrimi</dt>
+            <dd><Ph value={site.barChamber} /></dd>
+          </div>
+          <div>
+            <dt>Licenca</dt>
+            <dd><Ph value={site.licenseNumber} /></dd>
+          </div>
+          <div>
+            <dt>Gjuhët e punës</dt>
+            <dd><Ph value="[GJUHËT E PUNËS, P.SH. SHQIP, ANGLISHT]" /></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="prose about__body">
+        <h2>Prezantim profesional</h2>
+        <p>
+          Si praktikë individuale, çdo çështje ndiqet personalisht nga fillimi deri në përmbyllje. Kjo ju
+          siguron një pikë të vetme kontakti, njohje të hollësishme të rastit tuaj dhe komunikim të drejtpërdrejtë
+          për çdo zhvillim.
+        </p>
+        <p><Ph value="[PREZANTIM PROFESIONAL: KUSH ËSHTË AVOKATI, PËR KË PUNON DHE ÇFARË E DALLON QASJEN E TIJ]" /></p>
+
+        <h2>Biografia</h2>
+        <p><Ph value="[BIOGRAFIA: RRUGA PROFESIONALE, ME FAKTE TË VERIFIKUARA]" /></p>
+
+        <h2>Arsimimi dhe kualifikimet</h2>
+        <ul>
+          <li><Ph value="[DIPLOMA NË DREJTËSI – UNIVERSITETI, VITI]" /></li>
+          <li><Ph value="[STUDIME PASUNIVERSITARE, NËSE KA]" /></li>
+          <li><Ph value="[KUALIFIKIME OSE TRAJNIME PROFESIONALE TË VERIFIKUARA]" /></li>
+        </ul>
+
+        <h2>Përvoja profesionale</h2>
+        <p><Ph value="[PËRVOJA PROFESIONALE]" /></p>
+
+        <h2>Fushat e praktikës</h2>
+        <ul class="about__areas">
+          {
+            services.map((s) => (
+              <li>
+                <a href={serviceUrl(s.slug)}>
+                  {s.title} <Icon name="arrow" size={16} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2>Anëtarësime profesionale</h2>
+        <p><Ph value="[ANËTARËSIME PROFESIONALE TË VERIFIKUARA, NËSE KA]" /></p>
+
+        <div class="about__cta">
+          <a class="btn" href={routes.booking}>Rezervo një konsultë <Icon name="arrow" class="arrow" /></a>
+          <a class="btn btn--ghost" href={routes.contact}>Kontakto {lawyerWord.acc}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .about { display: grid; gap: 64px; }
+  @media (min-width: 960px) {
+    .about { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 96px; align-items: start; }
+    .about__aside { position: sticky; top: 112px; }
+  }
+  .about__aside { max-width: 440px; }
+  .about__facts { margin: 56px 0 0; display: grid; }
+  .about__facts > div { padding: 16px 0; border-top: 1px solid var(--stone); }
+  .about__facts > div:last-child { border-bottom: 1px solid var(--stone); }
+  .about__facts dt {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--bronze); margin-bottom: 4px;
+  }
+  .about__facts dd { margin: 0; }
+  .about__areas { list-style: none; padding: 0 !important; border-top: 1px solid var(--stone); }
+  .about__areas li { margin: 0 !important; }
+  .about__areas a {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid var(--stone);
+    text-decoration: none; font-family: var(--font-display); font-size: 1.3rem;
+  }
+  .about__areas a :global(svg) { color: var(--bronze); }
+  .about__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 56px; }
+</style>

@@ -1,0 +1,94 @@
+---
+import Logo from './Logo.astro';
+import Ph from './Ph.astro';
+import { site, confirmed } from '../config/site.ts';
+import { mainNav, legalNav, routes, serviceUrl } from '../config/navigation.ts';
+import { services } from '../config/services.ts';
+
+const year = new Date().getFullYear();
+const phoneHref = confirmed(site.contact.phoneE164);
+const email = confirmed(site.contact.email);
+---
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a href={routes.home} class="site-footer__logo" aria-label="Kryefaqja"><Logo variant="light" /></a>
+        <p class="site-footer__tagline">
+          Këshillim dhe përfaqësim ligjor për individë, familje dhe biznese në Shqipëri.
+        </p>
+        <a href={routes.booking} class="btn btn--light">Rezervo një konsultë</a>
+      </div>
+
+      <nav aria-label="Navigimi në fund të faqes" class="site-footer__col">
+        <h2 class="site-footer__heading">Faqet</h2>
+        <ul>
+          {mainNav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href={routes.booking}>Rezervo një konsultë</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Shërbimet" class="site-footer__col">
+        <h2 class="site-footer__heading">Shërbimet</h2>
+        <ul>
+          {services.map((s) => <li><a href={serviceUrl(s.slug)}>{s.title}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Kontakti</h2>
+        <address>
+          <p><Ph value={site.contact.streetAddress} /><br /><Ph value={site.contact.city} />, {site.contact.country}</p>
+          <p>
+            {phoneHref ? <a href={`tel:${phoneHref}`}>{site.contact.phoneDisplay}</a> : <Ph value={site.contact.phoneDisplay} />}
+            <br />
+            {email ? <a href={`mailto:${email}`}>{email}</a> : <Ph value={site.contact.email} />}
+          </p>
+        </address>
+      </div>
+    </div>
+
+    <p class="site-footer__disclaimer">
+      Informacioni në këtë faqe ka karakter të përgjithshëm dhe nuk përbën këshillë ligjore për një rast konkret.
+      Dërgimi i një mesazhi ose i një kërkese për takim nuk krijon marrëdhënie avokat–klient.
+    </p>
+
+    <div class="site-footer__bottom">
+      <p>
+        © {year} {site.practiceName} · Av. <Ph value={site.lawyerName} />. Të gjitha të drejtat e rezervuara.
+      </p>
+      <ul class="site-footer__legal">
+        {legalNav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--ink); padding-block: clamp(64px, 8vw, 96px) 32px; font-size: 0.95rem; }
+  .site-footer a { text-decoration: none; }
+  .site-footer a:hover { color: var(--bronze-light); }
+  .site-footer__top { display: grid; gap: 48px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .site-footer__top { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .site-footer__top { grid-template-columns: 1.5fr 0.8fr 1.1fr 1.2fr; } }
+  .site-footer__logo { display: inline-block; margin-bottom: 20px; }
+  .site-footer__tagline { color: rgba(246, 242, 234, 0.7); max-width: 26em; margin-bottom: 28px; }
+  .site-footer__heading {
+    font-family: var(--font-text); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--bronze-light); margin-bottom: 18px;
+  }
+  .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .site-footer address { font-style: normal; color: rgba(246, 242, 234, 0.85); }
+  .site-footer__disclaimer {
+    margin: 64px 0 0; padding-top: 28px;
+    border-top: 1px solid rgba(246, 242, 234, 0.14);
+    font-size: 0.85rem; color: rgba(246, 242, 234, 0.6); max-width: 60em;
+  }
+  .site-footer__bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    margin-top: 28px; font-size: 0.85rem; color: rgba(246, 242, 234, 0.6);
+  }
+  .site-footer__bottom p { margin: 0; }
+  .site-footer__legal { display: flex !important; flex-wrap: wrap; gap: 8px 24px !important; }
+</style>

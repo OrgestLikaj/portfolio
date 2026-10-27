@@ -1,0 +1,276 @@
+/* ==========================================================================
+   Identiteti vizual
+   Paleta është e centralizuar këtu. Pasi të ngarkohet logoja, rregulloni
+   vetëm këto variabla që ngjyrat të përputhen me të.
+   ========================================================================== */
+:root {
+  --ink: #0c1d38;          /* blu e errët e logos – sfondi i errët, teksti kryesor */
+  --ink-2: #152a4b;
+  --ink-soft: #3a4860;
+  --ivory: #f6f2ea;        /* sfondi i ngrohtë */
+  --paper: #fbf9f5;
+  --stone: #e4ddcf;        /* vija ndarëse */
+  --stone-dark: #cfc5b2;
+  --muted: #5a6370;        /* teksti dytësor */
+  --bronze: #8a611c;       /* ari i logos, i errësuar për lexueshmëri mbi sfond të çelët */
+  --bronze-light: #d6a94f; /* ari i logos mbi sfond të errët */
+  --danger: #a3342b;
+  --success: #2f6b4a;
+
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-text: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --maxw: 1200px;
+  --gutter: clamp(20px, 5vw, 48px);
+  --section: clamp(72px, 10vw, 136px);
+  --radius: 2px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 96px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; height: auto; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.7rem, 6vw, 4.75rem); }
+h2 { font-size: clamp(2.1rem, 3.8vw, 3.2rem); }
+h3 { font-size: clamp(1.5rem, 2.2vw, 1.85rem); line-height: 1.2; }
+h4 { font-family: var(--font-text); font-size: 1rem; font-weight: 600; letter-spacing: 0; line-height: 1.4; }
+
+p { margin: 0 0 1.1em; text-wrap: pretty; }
+p:last-child { margin-bottom: 0; }
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { color: var(--bronze); }
+
+:focus-visible {
+  outline: 2px solid var(--bronze);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+.on-dark :focus-visible { outline-color: var(--bronze-light); }
+
+::selection { background: var(--ink); color: var(--ivory); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 16px; top: -100px; z-index: 100;
+  background: var(--ink); color: var(--ivory);
+  padding: 12px 18px; text-decoration: none;
+}
+.skip-link:focus { top: 16px; color: var(--ivory); }
+
+/* ---------- Struktura ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--maxw) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: var(--section); }
+.section--ivory { background: var(--ivory); }
+.section--ink { background: var(--ink); color: var(--ivory); }
+.section--tight { padding-block: clamp(56px, 7vw, 96px); }
+
+.on-dark { color: var(--ivory); }
+.on-dark a:hover { color: var(--bronze-light); }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: var(--font-text);
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--bronze);
+  margin: 0 0 22px;
+}
+.eyebrow::before {
+  content: ''; width: 32px; height: 1px; background: currentColor;
+}
+.on-dark .eyebrow, .section--ink .eyebrow { color: var(--bronze-light); }
+
+.lede {
+  font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 38em;
+}
+.section--ink .lede, .on-dark .lede { color: rgba(246, 242, 234, 0.78); }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.9rem; }
+
+.section-head {
+  display: grid; gap: 20px;
+  margin-bottom: clamp(40px, 6vw, 72px);
+  max-width: 760px;
+}
+.section-head--split {
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+}
+@media (min-width: 900px) {
+  .section-head--split { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; }
+}
+.section-head h2 { max-width: 16em; }
+
+.rule { height: 1px; background: var(--stone); border: 0; margin: 0; }
+
+/* ---------- Butonat ---------- */
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--ivory);
+  --btn-border: var(--ink);
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: 52px;
+  padding: 14px 28px;
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: 500 0.95rem/1.2 var(--font-text);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.btn:hover { --btn-bg: var(--ink-2); color: var(--btn-fg); }
+.btn .arrow { transition: transform 0.3s var(--ease); }
+.btn:hover .arrow { transform: translateX(4px); }
+.btn--ghost { --btn-bg: transparent; --btn-fg: var(--ink); --btn-border: var(--stone-dark); }
+.btn--ghost:hover { --btn-bg: transparent; --btn-border: var(--ink); color: var(--ink); }
+.btn--light { --btn-bg: var(--ivory); --btn-fg: var(--ink); --btn-border: var(--ivory); }
+.btn--light:hover { --btn-bg: #fff; color: var(--ink); }
+.btn--ghost-light { --btn-bg: transparent; --btn-fg: var(--ivory); --btn-border: rgba(246, 242, 234, 0.35); }
+.btn--ghost-light:hover { --btn-bg: transparent; --btn-border: var(--ivory); color: var(--ivory); }
+.btn[disabled], .btn[aria-disabled='true'] { opacity: 0.6; cursor: progress; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.text-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 500; text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
+}
+.text-link .arrow { transition: transform 0.3s var(--ease); }
+.text-link:hover .arrow { transform: translateX(4px); }
+
+/* ---------- Placeholder (informacion që mungon) ---------- */
+.ph {
+  display: inline;
+  padding: 0.05em 0.35em;
+  border: 1px dashed #b5832a;
+  background: rgba(214, 170, 82, 0.16);
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82em;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+.section--ink .ph, .on-dark .ph { border-color: #d8b56a; background: rgba(214, 170, 82, 0.14); }
+.ph-block {
+  display: block;
+  padding: 18px 20px;
+  border: 1px dashed #b5832a;
+  background: rgba(214, 170, 82, 0.1);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ---------- Njoftime ---------- */
+.notice {
+  display: flex; gap: 14px;
+  padding: 18px 20px;
+  border-left: 2px solid var(--bronze);
+  background: var(--ivory);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.notice strong { color: var(--ink); }
+.notice svg { flex: none; margin-top: 3px; color: var(--bronze); }
+
+/* ---------- Faqet e brendshme ---------- */
+.page-hero {
+  background: var(--ink);
+  color: var(--ivory);
+  padding-block: clamp(56px, 8vw, 104px) clamp(56px, 7vw, 88px);
+  position: relative;
+  overflow: hidden;
+}
+.page-hero h1 { max-width: 15em; }
+.page-hero .lede { margin-top: 24px; }
+
+.prose { max-width: 44rem; }
+.prose h2 { font-size: clamp(1.75rem, 2.8vw, 2.25rem); margin: 2.2em 0 0.7em; }
+.prose h2:first-child { margin-top: 0; }
+.prose h3 { font-size: 1.4rem; margin: 1.8em 0 0.6em; }
+.prose ul, .prose ol { padding-left: 1.2em; margin: 0 0 1.2em; }
+.prose li { margin-bottom: 0.45em; }
+.prose li::marker { color: var(--bronze); }
+
+.check-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.check-list li {
+  position: relative; padding-left: 30px;
+}
+.check-list li::before {
+  content: ''; position: absolute; left: 0; top: 0.72em;
+  width: 16px; height: 1px; background: var(--bronze);
+}
+
+/* ---------- Animacioni i hyrjes (vetëm CSS; pa JavaScript, vetëm kur lejohet lëvizja) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}

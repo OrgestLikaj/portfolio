@@ -1,0 +1,151 @@
+---
+import '../styles/forms.css';
+import Icon from './Icon.astro';
+import { serviceOptions } from '../config/services.ts';
+import { site } from '../config/site.ts';
+import { routes } from '../config/navigation.ts';
+import { LIMITS } from '../lib/validation.ts';
+---
+<div class="form-wrap" data-form-wrap>
+  <form
+    class="form"
+    data-form="booking"
+    action="/api/rezervim/"
+    method="post"
+    novalidate
+    aria-describedby="booking-intro"
+  >
+    <p id="booking-intro" class="field__hint">
+      Fushat e shënuara me <span aria-hidden="true">*</span><span class="visually-hidden">yll</span> janë të detyrueshme.
+    </p>
+
+    <div class="field">
+      <label class="field__label" for="b-service">Shërbimi <span aria-hidden="true">*</span></label>
+      <select id="b-service" name="service" required aria-describedby="b-service-err">
+        <option value="">Zgjidhni shërbimin</option>
+        {serviceOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+      <p class="field__error" id="b-service-err" hidden></p>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="b-name">Emri dhe mbiemri <span aria-hidden="true">*</span></label>
+      <input id="b-name" name="name" type="text" autocomplete="name" required maxlength={LIMITS.nameMax} aria-describedby="b-name-err" />
+      <p class="field__error" id="b-name-err" hidden></p>
+    </div>
+
+    <div class="form__row form__row--2">
+      <div class="field">
+        <label class="field__label" for="b-email">Adresa e emailit</label>
+        <input id="b-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength={LIMITS.emailMax} aria-describedby="b-reach-hint b-email-err" />
+        <p class="field__error" id="b-email-err" hidden></p>
+      </div>
+      <div class="field">
+        <label class="field__label" for="b-phone">Numri i telefonit</label>
+        <input id="b-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="24" aria-describedby="b-reach-hint b-phone-err" />
+        <p class="field__error" id="b-phone-err" hidden></p>
+      </div>
+    </div>
+    <p class="field__hint" id="b-reach-hint">Jepni të paktën një: email ose numër telefoni, që t’ju kontaktoj për konfirmim.</p>
+
+    <div class="form__row form__row--2">
+      <div class="field">
+        <label class="field__label" for="b-date">Data e preferuar <span aria-hidden="true">*</span></label>
+        <input id="b-date" name="date" type="date" required aria-describedby="b-date-hint b-date-err" />
+        <p class="field__hint" id="b-date-hint" data-date-hint>Ditët e punës, duke filluar nga dita e nesërme.</p>
+        <p class="field__error" id="b-date-err" hidden></p>
+      </div>
+
+    </div>
+
+    <fieldset class="field" aria-describedby="b-time-hint b-time-err">
+      <legend>Ora e preferuar <span aria-hidden="true">*</span></legend>
+      <div class="choices choices--slots" data-slots role="presentation"></div>
+      <p class="slots-empty" id="b-time-hint" data-slots-empty>Zgjidhni fillimisht një datë për të parë oraret e mundshme.</p>
+      <p class="field__error" id="b-time-err" hidden></p>
+    </fieldset>
+
+    {
+      site.consultationModes.length > 0 && (
+        <fieldset class="field" aria-describedby="b-mode-err">
+          <legend>Mënyra e takimit <span aria-hidden="true">*</span></legend>
+          <div class="choices">
+            {site.consultationModes.map((m) => (
+              <label class="choice">
+                <input type="radio" name="mode" value={m.value} required />
+                <span>{m.label}</span>
+              </label>
+            ))}
+          </div>
+          <p class="field__error" id="b-mode-err" hidden></p>
+        </fieldset>
+      )
+    }
+
+    <div class="field">
+      <label class="field__label" for="b-note">Përshkrim i shkurtër <span class="field__opt">(opsional)</span></label>
+      <textarea id="b-note" name="note" rows="4" maxlength={LIMITS.noteMax} aria-describedby="b-note-hint b-note-err" data-counter="b-note-count"></textarea>
+      <p class="field__hint" id="b-note-hint">
+        Mjaftojnë një-dy fjali për temën e takimit. Ju lutemi mos shkruani detaje konfidenciale të çështjes.
+      </p>
+      <p class="field__counter" id="b-note-count" aria-live="polite">0 / {LIMITS.noteMax}</p>
+      <p class="field__error" id="b-note-err" hidden></p>
+    </div>
+
+    <div class="hp" aria-hidden="true">
+      <label for="b-website">Mos e plotësoni këtë fushë</label>
+      <input id="b-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label class="check">
+        <input type="checkbox" name="privacy" required aria-describedby="b-privacy-err" />
+        <span>
+          Kam lexuar <a href={routes.privacy} target="_blank" rel="noopener">njoftimin e privatësisë<span class="visually-hidden"> (hapet në një dritare të re)</span></a>
+          dhe pranoj që të dhënat e mia të përdoren për t’iu përgjigjur kësaj kërkese.
+          <span aria-hidden="true">*</span>
+        </span>
+      </label>
+      <p class="field__error" id="b-privacy-err" hidden></p>
+    </div>
+
+    <div class="form__status" data-status role="alert" aria-live="assertive"></div>
+
+    <div class="form__submit">
+      <button class="btn" type="submit" data-submit>
+        <span data-submit-label>Dërgo kërkesën</span>
+        <span class="spinner" aria-hidden="true"></span>
+        <Icon name="arrow" class="arrow" />
+      </button>
+      <p class="form-notice">
+        Kërkesa nuk përbën konfirmim takimi dhe nuk krijon marrëdhënie avokat–klient.
+      </p>
+    </div>
+
+    <noscript>
+      <div class="form-alert form-alert--info">
+        Formulari kërkon JavaScript. Mund të më kontaktoni edhe me telefon ose email – shihni faqen e kontaktit.
+      </div>
+    </noscript>
+  </form>
+
+  <div class="form-success" data-success hidden tabindex="-1">
+    <span class="form-success__icon" aria-hidden="true"><Icon name="check" size={24} /></span>
+    <h2>Kërkesa u dërgua</h2>
+    <p data-success-message></p>
+    <div class="form-success__next">
+      <h3>Çfarë ndodh më pas?</h3>
+      <ul class="check-list">
+        <li>Do t’ju kontaktoj me telefon ose email për të konfirmuar takimin.</li>
+        <li>Nëse orari i kërkuar nuk është i lirë, do t’ju propozoj një orar tjetër.</li>
+        <li>Takimi konsiderohet i rezervuar vetëm pas konfirmimit nga ana ime.</li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn--ghost" data-reset>Dërgo një kërkesë tjetër</button>
+  </div>
+</div>
+
+<script>
+  import { initForm } from '../scripts/forms.ts';
+  document.querySelectorAll<HTMLFormElement>('form[data-form="booking"]').forEach((f) => initForm(f, 'booking'));
+</script>

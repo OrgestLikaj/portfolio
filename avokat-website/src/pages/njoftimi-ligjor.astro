@@ -1,0 +1,72 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Ph from '../components/Ph.astro';
+import { routes } from '../config/navigation.ts';
+import { site, confirmed, lawyerWord } from '../config/site.ts';
+const email = confirmed(site.contact.email);
+const phone = confirmed(site.contact.phoneE164);
+---
+<LegalLayout
+  title="Njoftimi ligjor"
+  description="Informacion për subjektin përgjegjës të faqes, rregullimin e profesionit dhe kushtet e përdorimit të përmbajtjes."
+  path={routes.legal}
+>
+  <h2>Subjekti përgjegjës për faqen</h2>
+  <dl class="legal-facts">
+    <div><dt>Emri</dt><dd><Ph value={site.lawyerName} /></dd></div>
+    <div><dt>Profesioni</dt><dd>{lawyerWord.Indef}</dd></div>
+    <div><dt>Regjistrimi profesional</dt><dd><Ph value={site.barChamber} /></dd></div>
+    <div><dt>Numri i licencës</dt><dd><Ph value={site.licenseNumber} /></dd></div>
+    <div><dt>NIPT</dt><dd><Ph value={site.taxId} /></dd></div>
+    <div><dt>Adresa</dt><dd><Ph value={site.contact.streetAddress} />, <Ph value={site.contact.city} />, {site.contact.country}</dd></div>
+    <div><dt>Telefoni</dt><dd>{phone ? <a href={`tel:${phone}`}>{site.contact.phoneDisplay}</a> : <Ph value={site.contact.phoneDisplay} />}</dd></div>
+    <div><dt>Email</dt><dd>{email ? <a href={`mailto:${email}`}>{email}</a> : <Ph value={site.contact.email} />}</dd></div>
+  </dl>
+
+  <h2>Rregullimi i profesionit</h2>
+  <p>
+    Profesioni i avokatit në Republikën e Shqipërisë rregullohet nga Ligji nr. 55/2018 “Për profesionin e avokatit
+    në Republikën e Shqipërisë” dhe nga aktet e Dhomës Kombëtare të Avokatisë, përfshirë rregullat e etikës
+    profesionale.
+  </p>
+  <p><Ph value="[VERIFIKONI REFERENCAT E MËSIPËRME DHE SHTONI ÇDO INFORMACION TJETËR TË DETYRUESHËM PËR PUBLIKIM]" /></p>
+
+  <h2>Karakteri i informacionit</h2>
+  <p>
+    Përmbajtja e kësaj faqeje ka karakter të përgjithshëm informues dhe nuk përbën këshillë ligjore për një rast
+    konkret. Për një vlerësim të situatës suaj nevojitet një konsultë, gjatë së cilës merren parasysh rrethanat
+    specifike. Rezultati i një çështjeje varet nga faktet, provat dhe vendimet e organeve kompetente dhe nuk mund
+    të garantohet paraprakisht.
+  </p>
+
+  <h2>Marrëdhënia avokat–klient</h2>
+  <p>
+    Vizita e faqes, dërgimi i një mesazhi ose i një kërkese për konsultë nuk krijojnë marrëdhënie avokat–klient.
+    Kjo marrëdhënie krijohet vetëm pas marrëveshjes së ndërsjellë për angazhimin, sipas rregullave që zbatohen për
+    profesionin.
+  </p>
+
+  <h2>Lidhjet drejt faqeve të tjera</h2>
+  <p>
+    Faqja mund të përmbajë lidhje drejt faqeve të palëve të treta. Për përmbajtjen dhe praktikat e privatësisë së
+    atyre faqeve përgjegjësinë e mbajnë administratorët e tyre.
+  </p>
+
+  <h2>Të drejtat e autorit</h2>
+  <p>
+    Tekstet, struktura dhe elementet grafike të kësaj faqeje janë të mbrojtura. Riprodhimi i tyre lejohet vetëm me
+    pëlqim paraprak, përveç rasteve kur ligji parashikon ndryshe.
+  </p>
+
+  <h2>Hostimi</h2>
+  <p>Faqja hostohet nga: <Ph value="[EMRI DHE ADRESA E OFRUESIT TË HOSTIMIT]" />.</p>
+</LegalLayout>
+
+<style>
+  .legal-facts { margin: 0 0 1.5em; display: grid; }
+  .legal-facts > div { display: grid; gap: 4px 24px; padding: 14px 0; border-top: 1px solid var(--stone); }
+  .legal-facts > div:last-child { border-bottom: 1px solid var(--stone); }
+  @media (min-width: 640px) { .legal-facts > div { grid-template-columns: 200px 1fr; } }
+  .legal-facts dt { font-weight: 600; font-size: 0.92rem; }
+  .legal-facts dd { margin: 0; }
+</style>

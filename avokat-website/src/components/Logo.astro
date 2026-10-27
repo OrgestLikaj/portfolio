@@ -1,0 +1,75 @@
+---
+/**
+ * Logoja: vula origjinale rrethore (proporcione 1:1, pa shtrembërim) dhe
+ * emri i avokatit. Teksti brenda vulës nuk lexohet në përmasa të vogla,
+ * prandaj emri shfaqet edhe si tekst.
+ */
+import { site, isPlaceholder, lawyerWord } from '../config/site.ts';
+
+interface Props {
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+const { variant = 'dark', class: className } = Astro.props;
+const hasLogo = Boolean(site.logo.src);
+const namePh = isPlaceholder(site.lawyerName);
+---
+<span class:list={['logo', `logo--${variant}`, className]}>
+  {
+    hasLogo ? (
+      <img
+        src={site.logo.src}
+        width={site.logo.width}
+        height={site.logo.height}
+        alt={`Logoja e ${site.practiceName}`}
+        class="logo__img"
+        decoding="async"
+      />
+    ) : (
+      <span class="logo__mark" aria-hidden="true">§</span>
+    )
+  }
+  <span class="logo__text">
+    <span class="logo__name">
+      {namePh ? <span class="ph" data-placeholder>{site.lawyerName}</span> : site.lawyerName}
+    </span>
+    <span class="logo__role">{lawyerWord.Indef}</span>
+  </span>
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 14px; min-width: 0; }
+  .logo--dark { color: var(--ink); }
+  .logo--light { color: var(--ivory); }
+  .logo__img { width: 52px; height: 52px; flex: none; }
+  .logo--light .logo__img { width: 64px; height: 64px; }
+  .logo__mark {
+    width: 40px; height: 40px; flex: none;
+    display: grid; place-items: center;
+    border: 1px solid currentColor;
+    color: var(--bronze);
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+  .logo--light .logo__mark { color: var(--bronze-light); }
+  .logo__text { display: grid; line-height: 1.15; min-width: 0; }
+  .logo__name {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .logo__name .ph { font-size: 0.55em; vertical-align: middle; }
+  .logo__role {
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-top: 3px;
+  }
+  .logo--light .logo__role { color: var(--bronze-light); }
+</style>

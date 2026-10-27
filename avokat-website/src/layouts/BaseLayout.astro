@@ -1,0 +1,77 @@
+---
+// Fontet ruhen në vetë faqen (pa kërkesa te Google Fonts). Nëngrupi "latin" mbulon ë dhe ç.
+import '@fontsource/cormorant-garamond/latin-500.css';
+import '@fontsource/cormorant-garamond/latin-600.css';
+import '@fontsource/cormorant-garamond/latin-500-italic.css';
+import '@fontsource-variable/inter/wght.css';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { brandName, lawyerWord } from '../config/site.ts';
+import { absolute, breadcrumbLd, indexingAllowed, type Crumb } from '../lib/seo.ts';
+
+interface Props {
+  /** Titulli i faqes (pa emrin e praktikës – shtohet automatikisht). */
+  title: string;
+  description: string;
+  /** Gjurma e navigimit për structured data. */
+  breadcrumbs?: Crumb[];
+  /** JSON-LD shtesë për këtë faqe. */
+  jsonLd?: Record<string, unknown> | null;
+  /** Përjashton faqen nga indeksimi (p.sh. 404). */
+  noindex?: boolean;
+  /** Titull i plotë pa prapashtesë. */
+  rawTitle?: boolean;
+}
+
+const { title, description, breadcrumbs, jsonLd, noindex = false, rawTitle = false } = Astro.props;
+const brand = brandName();
+const fullTitle = rawTitle ? title : `${title} | ${brand}`;
+const canonical = absolute(Astro.url.pathname, Astro.site);
+const ogImage = absolute('/og-image.png', Astro.site);
+const robots = noindex || !indexingAllowed ? 'noindex, nofollow' : 'index, follow';
+
+const ld = [jsonLd, breadcrumbs && breadcrumbs.length > 1 ? breadcrumbLd(breadcrumbs, Astro.site) : null].filter(
+  Boolean,
+);
+---
+<!doctype html>
+<html lang="sq">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0c1d38" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="sq_AL" />
+    <meta property="og:site_name" content={brand === lawyerWord.Indef ? brand : `${brand} – ${lawyerWord.Indef}`} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Këshillim dhe përfaqësim ligjor në Shqipëri" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Kalo te përmbajtja</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

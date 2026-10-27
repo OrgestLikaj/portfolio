@@ -1,0 +1,182 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { mainNav, routes } from '../config/navigation.ts';
+import { services } from '../config/services.ts';
+import { serviceUrl } from '../config/navigation.ts';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a href={routes.home} class="site-header__brand" aria-label="Kryefaqja">
+      <Logo />
+    </a>
+
+    <nav class="site-nav" aria-label="Navigimi kryesor">
+      <ul class="site-nav__list">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={item.href} class="site-nav__link" aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a href={routes.booking} class="btn site-header__cta" aria-current={isCurrent(routes.booking) ? 'page' : undefined}>
+        Rezervo një konsultë
+      </a>
+    </nav>
+
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <span class="menu-toggle__label" data-menu-label>Menyja</span>
+      <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu on-dark" hidden data-menu>
+    <nav class="container mobile-menu__inner" aria-label="Navigimi për celular">
+      <ul class="mobile-menu__list">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mobile-menu__sub">Shërbimet</p>
+      <ul class="mobile-menu__services">
+        {services.map((s) => <li><a href={serviceUrl(s.slug)}>{s.title}</a></li>)}
+      </ul>
+      <a href={routes.booking} class="btn btn--light mobile-menu__cta">
+        Rezervo një konsultë <Icon name="arrow" class="arrow" />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+  const header = document.querySelector<HTMLElement>('[data-header]');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    document.documentElement.classList.toggle('menu-open', open);
+    if (label) label.textContent = open ? 'Mbyll' : 'Menyja';
+  }
+
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false);
+  });
+
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251, 249, 245, 0.92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s var(--ease);
+  }
+  .site-header.is-scrolled { border-bottom-color: var(--stone); }
+  .site-header__inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    min-height: 84px;
+  }
+  .site-header__brand { text-decoration: none; min-width: 0; }
+  .site-header__brand:hover { color: inherit; }
+
+  .site-nav { display: none; align-items: center; gap: 36px; }
+  .site-nav__list { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
+  .site-nav__link {
+    position: relative;
+    font-size: 0.93rem; font-weight: 500;
+    text-decoration: none; padding-block: 8px;
+  }
+  .site-nav__link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 2px;
+    height: 1px; background: var(--bronze);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s var(--ease);
+  }
+  .site-nav__link:hover { color: var(--ink); }
+  .site-nav__link:hover::after, .site-nav__link[aria-current='page']::after { transform: scaleX(1); }
+  .site-header__cta { min-height: 46px; padding: 12px 22px; font-size: 0.9rem; }
+
+  .menu-toggle {
+    display: inline-flex; align-items: center; gap: 12px;
+    min-height: 44px; padding: 8px 4px 8px 12px;
+    background: none; border: 0; color: var(--ink);
+    font: 500 0.85rem var(--font-text); letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer;
+  }
+  .menu-toggle__bars { display: grid; gap: 6px; width: 24px; }
+  .menu-toggle__bars span { height: 1.5px; background: currentColor; transition: transform 0.3s var(--ease); }
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:first-child { transform: translateY(3.75px) rotate(45deg); }
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+  .mobile-menu {
+    position: fixed; inset: 84px 0 0 0;
+    background: var(--ink);
+    overflow-y: auto;
+    padding-block: 32px 48px;
+  }
+  .mobile-menu__list { list-style: none; margin: 0; padding: 0; }
+  .mobile-menu__list a {
+    display: block; padding: 12px 0;
+    font-family: var(--font-display); font-size: 2rem; line-height: 1.2;
+    text-decoration: none; border-bottom: 1px solid rgba(246, 242, 234, 0.12);
+  }
+  .mobile-menu__list a[aria-current='page'] { color: var(--bronze-light); }
+  .mobile-menu__sub {
+    margin: 32px 0 8px; font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--bronze-light);
+  }
+  .mobile-menu__services { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .mobile-menu__services a { display: block; padding: 8px 0; text-decoration: none; opacity: 0.85; }
+  .mobile-menu__cta { margin-top: 32px; width: 100%; }
+
+  @media (min-width: 1024px) {
+    .site-nav { display: flex; }
+    .menu-toggle { display: none; }
+    .mobile-menu { display: none; }
+  }
+  @media (max-width: 420px) {
+    .menu-toggle__label {
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap;
+    }
+  }
+  :global(html.menu-open) { overflow: hidden; }
+</style>

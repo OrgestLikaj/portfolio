@@ -1,0 +1,35 @@
+---
+import { site, isPlaceholder, lawyerWord } from '../config/site.ts';
+const hasPortrait = Boolean(site.portrait.src);
+const alt = isPlaceholder(site.lawyerName)
+  ? `Portret profesional i ${lawyerWord.gen}`
+  : `${site.lawyerName}, ${lawyerWord.indef}`;
+---
+<figure class="portrait">
+  {
+    hasPortrait ? (
+      <img src={site.portrait.src} width={site.portrait.width} height={site.portrait.height} alt={alt} loading="lazy" decoding="async" />
+    ) : (
+      <div class="portrait__placeholder">
+        <span class="ph" data-placeholder>[PORTRETI PROFESIONAL, NËSE OFROHET]</span>
+      </div>
+    )
+  }
+</figure>
+
+<style>
+  .portrait { margin: 0 18px 18px 0; position: relative; }
+  .portrait::before {
+    content: ''; position: absolute; inset: 18px -18px -18px 18px;
+    border: 1px solid var(--stone-dark); z-index: 0;
+  }
+  .portrait img, .portrait__placeholder {
+    position: relative; z-index: 1; width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  }
+  .portrait__placeholder {
+    display: grid; place-items: center; padding: 24px; text-align: center;
+    background:
+      linear-gradient(160deg, rgba(12, 29, 56, 0.05), rgba(12, 29, 56, 0.12)),
+      var(--ivory);
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import '../styles/forms.css';
+import Icon from './Icon.astro';
+import { serviceOptions } from '../config/services.ts';
+import { routes } from '../config/navigation.ts';
+import { LIMITS } from '../lib/validation.ts';
+---
+<div class="form-wrap" data-form-wrap>
+  <form class="form" data-form="contact" action="/api/kontakt/" method="post" novalidate aria-describedby="contact-intro">
+    <p id="contact-intro" class="field__hint">
+      Fushat e shënuara me <span aria-hidden="true">*</span><span class="visually-hidden">yll</span> janë të detyrueshme.
+    </p>
+
+    <div class="field">
+      <label class="field__label" for="c-name">Emri dhe mbiemri <span aria-hidden="true">*</span></label>
+      <input id="c-name" name="name" type="text" autocomplete="name" required maxlength={LIMITS.nameMax} aria-describedby="c-name-err" />
+      <p class="field__error" id="c-name-err" hidden></p>
+    </div>
+
+    <div class="form__row form__row--2">
+      <div class="field">
+        <label class="field__label" for="c-email">Adresa e emailit <span aria-hidden="true">*</span></label>
+        <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength={LIMITS.emailMax} aria-describedby="c-email-err" />
+        <p class="field__error" id="c-email-err" hidden></p>
+      </div>
+      <div class="field">
+        <label class="field__label" for="c-phone">Numri i telefonit <span class="field__opt">(opsional)</span></label>
+        <input id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="24" aria-describedby="c-phone-err" />
+        <p class="field__error" id="c-phone-err" hidden></p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="c-service">Shërbimi për të cilin kërkoni informacion <span aria-hidden="true">*</span></label>
+      <select id="c-service" name="service" required aria-describedby="c-service-err">
+        <option value="">Zgjidhni shërbimin</option>
+        {serviceOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+      <p class="field__error" id="c-service-err" hidden></p>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="c-message">Mesazhi <span aria-hidden="true">*</span></label>
+      <textarea id="c-message" name="message" rows="6" required maxlength={LIMITS.messageMax} aria-describedby="c-message-hint c-message-err" data-counter="c-message-count"></textarea>
+      <p class="field__hint" id="c-message-hint">
+        Përshkruani shkurt pyetjen tuaj. Ju lutemi mos dërgoni detaje konfidenciale të çështjes ose dokumente
+        derisa të kemi vendosur një kanal të përshtatshëm komunikimi.
+      </p>
+      <p class="field__counter" id="c-message-count" aria-live="polite">0 / {LIMITS.messageMax}</p>
+      <p class="field__error" id="c-message-err" hidden></p>
+    </div>
+
+    <div class="hp" aria-hidden="true">
+      <label for="c-website">Mos e plotësoni këtë fushë</label>
+      <input id="c-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label class="check">
+        <input type="checkbox" name="privacy" required aria-describedby="c-privacy-err" />
+        <span>
+          Kam lexuar <a href={routes.privacy} target="_blank" rel="noopener">njoftimin e privatësisë<span class="visually-hidden"> (hapet në një dritare të re)</span></a>
+          dhe pranoj që të dhënat e mia të përdoren për t’iu përgjigjur këtij mesazhi.
+          <span aria-hidden="true">*</span>
+        </span>
+      </label>
+      <p class="field__error" id="c-privacy-err" hidden></p>
+    </div>
+
+    <div class="form__status" data-status role="alert" aria-live="assertive"></div>
+
+    <div class="form__submit">
+      <button class="btn" type="submit" data-submit>
+        <span data-submit-label>Dërgo mesazhin</span>
+        <span class="spinner" aria-hidden="true"></span>
+        <Icon name="arrow" class="arrow" />
+      </button>
+      <p class="form-notice">Dërgimi i mesazhit nuk krijon marrëdhënie avokat–klient.</p>
+    </div>
+
+    <noscript>
+      <div class="form-alert form-alert--info">
+        Formulari kërkon JavaScript. Mund të më kontaktoni drejtpërdrejt me telefon ose email.
+      </div>
+    </noscript>
+  </form>
+
+  <div class="form-success" data-success hidden tabindex="-1">
+    <span class="form-success__icon" aria-hidden="true"><Icon name="check" size={24} /></span>
+    <h2>Mesazhi u dërgua</h2>
+    <p data-success-message></p>
+    <button type="button" class="btn btn--ghost" data-reset>Dërgo një mesazh tjetër</button>
+  </div>
+</div>
+
+<script>
+  import { initForm } from '../scripts/forms.ts';
+  document.querySelectorAll<HTMLFormElement>('form[data-form="contact"]').forEach((f) => initForm(f, 'contact'));
+</script>

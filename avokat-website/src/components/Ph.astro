@@ -1,0 +1,15 @@
+---
+/**
+ * Shfaq një vlerë konfigurimi. Nëse është ende placeholder, shfaqet me stil
+ * të dallueshëm që të mos ngatërrohet me tekst të përfunduar.
+ */
+import { isPlaceholder } from '../config/site.ts';
+
+interface Props {
+  value: string;
+  block?: boolean;
+}
+const { value, block = false } = Astro.props;
+const ph = isPlaceholder(value);
+---
+{ph ? (block ? <span class="ph-block" data-placeholder>{value}</span> : <span class="ph" data-placeholder>{value}</span>) : <Fragment>{value}</Fragment>}

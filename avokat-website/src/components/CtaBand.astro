@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import Ph from './Ph.astro';
+import { routes } from '../config/navigation.ts';
+import { site, confirmed } from '../config/site.ts';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Keni një pyetje ligjore?',
+  text = 'Rezervoni një konsultë për të diskutuar situatën tuaj. Do t’ju kontaktoj për të konfirmuar datën dhe orën e takimit.',
+} = Astro.props;
+const phone = confirmed(site.contact.phoneE164);
+---
+<section class="cta-band section--tight">
+  <div class="container cta-band__inner">
+    <div>
+      <h2>{title}</h2>
+      <p class="lede">{text}</p>
+    </div>
+    <div class="cta-band__actions">
+      <a class="btn" href={routes.booking}>Rezervo një konsultë <Icon name="arrow" class="arrow" /></a>
+      <p class="small muted cta-band__phone">
+        ose telefononi:{' '}
+        {phone ? <a href={`tel:${phone}`}>{site.contact.phoneDisplay}</a> : <Ph value={site.contact.phoneDisplay} />}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band { background: var(--ivory); border-top: 1px solid var(--stone); }
+  .cta-band__inner { display: grid; gap: 32px; align-items: end; }
+  .cta-band h2 { margin-bottom: 16px; }
+  .cta-band__actions { display: grid; gap: 14px; justify-items: start; }
+  @media (min-width: 900px) {
+    .cta-band__inner { grid-template-columns: 1.6fr 1fr; gap: 64px; }
+    .cta-band__actions { justify-items: end; text-align: right; }
+  }
+  .cta-band__phone { margin: 0; }
+</style>

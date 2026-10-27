@@ -1,0 +1,125 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Ph from '../components/Ph.astro';
+import { routes } from '../config/navigation.ts';
+import { site, confirmed, lawyerWord } from '../config/site.ts';
+const email = confirmed(site.contact.email);
+---
+<LegalLayout
+  title="Politika e privatësisë"
+  description="Si përpunohen të dhënat personale që dërgoni përmes formularëve të kontaktit dhe të rezervimit në këtë faqe interneti."
+  path={routes.privacy}
+>
+  <p>
+    Ky njoftim shpjegon se si përpunohen të dhënat tuaja personale kur vizitoni këtë faqe interneti ose kur
+    dërgoni një mesazh apo një kërkesë për konsultë. Të dhënat personale përpunohen në përputhje me legjislacionin
+    shqiptar për mbrojtjen e të dhënave personale, përfshirë Ligjin nr. 124/2024 “Për mbrojtjen e të dhënave
+    personale”, si dhe me detyrimin për ruajtjen e sekretit profesional që zbatohet për avokatët.
+  </p>
+
+  <h2>1. Kontrolluesi i të dhënave</h2>
+  <p>
+    Kontrollues i të dhënave është <Ph value={site.lawyerName} />, {lawyerWord.indef}, me adresë
+    <Ph value={site.contact.streetAddress} />, <Ph value={site.contact.city} />, {site.contact.country}.
+    Për çdo pyetje në lidhje me të dhënat tuaja personale mund të kontaktoni në
+    {email ? <a href={`mailto:${email}`}>{email}</a> : <Ph value={site.contact.email} />}.
+  </p>
+
+  <h2>2. Cilat të dhëna përpunohen</h2>
+  <h3>Formulari i kontaktit</h3>
+  <ul>
+    <li>emri dhe mbiemri;</li>
+    <li>adresa e emailit dhe, nëse e jepni, numri i telefonit;</li>
+    <li>shërbimi për të cilin kërkoni informacion;</li>
+    <li>përmbajtja e mesazhit.</li>
+  </ul>
+  <h3>Formulari i rezervimit</h3>
+  <ul>
+    <li>emri dhe mbiemri;</li>
+    <li>adresa e emailit dhe/ose numri i telefonit;</li>
+    <li>shërbimi, data dhe ora e preferuar, si dhe mënyra e preferuar e takimit;</li>
+    <li>përshkrimi i shkurtër, nëse e plotësoni.</li>
+  </ul>
+  <h3>Të dhëna teknike</h3>
+  <p>
+    Për të mbrojtur formularët nga abuzimi (p.sh. dërgimet automatike), serveri përdor përkohësisht adresën IP
+    të pajisjes suaj për të kufizuar numrin e kërkesave. Kjo e dhënë mbahet vetëm në memorien e serverit për
+    një kohë të shkurtër dhe nuk ruhet në një bazë të dhënash. Ofruesi i hostimit mund të mbajë regjistra
+    teknikë (log) të aksesit për arsye sigurie: <Ph value="[PËRSHKRUANI REGJISTRAT E OFRUESIT TË HOSTIMIT DHE AFATIN E RUAJTJES]" />.
+  </p>
+  <p>
+    Kjo faqe nuk përdor cookies, mjete analitike ose mjete të gjurmimit për qëllime marketingu. Për më shumë, shihni
+    <a href={routes.cookies}>Politikën e cookies</a>.
+  </p>
+
+  <h2>3. Të dhëna që ju lutemi të mos i dërgoni</h2>
+  <p>
+    Formularët shërbejnë për kontakt fillestar. Ju lutemi mos dërgoni përmes tyre detaje konfidenciale të
+    çështjes, dokumente, të dhëna shëndetësore, informacion për vepra penale ose të dhëna të tjera të ndjeshme,
+    për veten ose për persona të tjerë. Këto mund t’i diskutojmë gjatë konsultës ose përmes një kanali të
+    përshtatshëm komunikimi që do të vendosim së bashku.
+  </p>
+
+  <h2>4. Qëllimet dhe baza ligjore e përpunimit</h2>
+  <ul>
+    <li>
+      <strong>T’ju përgjigjem dhe të organizoj konsultën</strong> – përpunimi bëhet me kërkesën tuaj, për të
+      ndërmarrë hapa përpara një marrëveshjeje të mundshme për shërbime ligjore.
+    </li>
+    <li>
+      <strong>Siguria e faqes dhe mbrojtja nga abuzimi</strong> – mbi bazën e interesit legjitim për të mbajtur
+      faqen dhe formularët të sigurt.
+    </li>
+  </ul>
+  <p><Ph value="[VERIFIKONI BAZAT LIGJORE ME DISPOZITAT PËRKATËSE TË LIGJIT NR. 124/2024 PARA PUBLIKIMIT]" /></p>
+
+  <h2>5. Marrësit e të dhënave</h2>
+  <p>
+    Të dhënat nuk shiten dhe nuk u jepen palëve të treta për qëllime marketingu. Për funksionimin teknik të faqes,
+    të dhënat kalojnë përmes ofruesve të mëposhtëm të shërbimeve, të cilët veprojnë si përpunues:
+  </p>
+  <ul>
+    <li>ofruesi i hostimit të faqes: <Ph value="[EMRI I OFRUESIT TË HOSTIMIT DHE VENDNDODHJA E SERVERAVE]" />;</li>
+    <li>ofruesi i shërbimit të emailit: <Ph value="[EMRI I OFRUESIT TË EMAILIT]" />.</li>
+  </ul>
+
+  <h2>6. Transferimi i të dhënave jashtë Shqipërisë</h2>
+  <p><Ph value="[PLOTËSOHET SIPAS OFRUESVE TË ZGJEDHUR: NËSE TË DHËNAT TRANSFEROHEN JASHTË SHQIPËRISË, PËRSHKRUANI VENDIN DHE GARANCITË PËRKATËSE]" /></p>
+
+  <h2>7. Afati i ruajtjes</h2>
+  <p>
+    Faqja nuk ruan mesazhet në një bazë të dhënash. Mesazhet dhe kërkesat dërgohen me email dhe ruhen në kutinë
+    postare profesionale për aq kohë sa është e nevojshme për t’iu përgjigjur dhe për qëllimet e mësipërme:
+    <Ph value="[AFATI I RUAJTJES SË MESAZHEVE QË NUK ÇOJNË NË ANGAZHIM]" />. Nëse kërkesa çon në një angazhim,
+    të dhënat ruhen sipas detyrimeve ligjore dhe profesionale që zbatohen për dosjet e klientëve.
+  </p>
+
+  <h2>8. Të drejtat tuaja</h2>
+  <p>Në përputhje me legjislacionin në fuqi, ju keni të drejtë:</p>
+  <ul>
+    <li>të informoheni dhe të keni akses në të dhënat tuaja personale;</li>
+    <li>të kërkoni korrigjimin e të dhënave të pasakta;</li>
+    <li>të kërkoni fshirjen e të dhënave ose kufizimin e përpunimit, kur plotësohen kushtet ligjore;</li>
+    <li>të kundërshtoni përpunimin që bazohet në interesin legjitim;</li>
+    <li>të kërkoni transportueshmërinë e të dhënave, kur zbatohet.</li>
+  </ul>
+  <p>
+    Për të ushtruar këto të drejta, më kontaktoni në
+    {email ? <a href={`mailto:${email}`}>{email}</a> : <Ph value={site.contact.email} />}.
+    Keni gjithashtu të drejtë të paraqisni ankesë pranë Komisionerit për të Drejtën e Informimit dhe Mbrojtjen
+    e të Dhënave Personale (<a href="https://www.idp.al" target="_blank" rel="noopener noreferrer">www.idp.al</a>).
+  </p>
+
+  <h2>9. Siguria</h2>
+  <p>
+    Faqja përdor lidhje të koduar (HTTPS). Të dhënat e formularëve kontrollohen në server dhe dërgohen vetëm te
+    kutia postare profesionale. Megjithatë, asnjë transmetim përmes internetit nuk është plotësisht pa rrezik;
+    prandaj ju lutemi të mos dërgoni informacion konfidencial përmes formularëve.
+  </p>
+
+  <h2>10. Ndryshimet në këtë njoftim</h2>
+  <p>
+    Ky njoftim mund të përditësohet kur ndryshon mënyra e funksionimit të faqes ose legjislacioni. Data e
+    përditësimit të fundit tregohet në krye të faqes.
+  </p>
+</LegalLayout>

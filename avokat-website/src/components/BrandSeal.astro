@@ -1,0 +1,28 @@
+---
+/** Vula e studios në format të madh, në një kornizë të qetë. */
+import { site } from '../config/site.ts';
+---
+<figure class="seal">
+  <img
+    src={site.logo.srcLarge}
+    width="560"
+    height="560"
+    alt={`Vula e ${site.practiceName} – Av. ${site.lawyerName}`}
+    loading="lazy"
+    decoding="async"
+  />
+</figure>
+
+<style>
+  .seal {
+    margin: 0 18px 18px 0; position: relative; isolation: isolate;
+    display: grid; place-items: center;
+    aspect-ratio: 4 / 5;
+    background: var(--ivory);
+  }
+  .seal::before {
+    content: ''; position: absolute; inset: 18px -18px -18px 18px;
+    border: 1px solid var(--stone-dark); z-index: -1;
+  }
+  .seal img { width: 72%; height: auto; filter: drop-shadow(0 18px 30px rgba(12, 29, 56, 0.18)); }
+</style>

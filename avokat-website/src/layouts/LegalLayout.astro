@@ -1,0 +1,47 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Ph from '../components/Ph.astro';
+import Icon from '../components/Icon.astro';
+import { routes } from '../config/navigation.ts';
+import { site } from '../config/site.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+}
+const { title, description, path } = Astro.props;
+const crumbs = [
+  { label: 'Kryefaqja', href: routes.home },
+  { label: title, href: path },
+];
+---
+<BaseLayout title={title} description={description} breadcrumbs={crumbs}>
+  <PageHero eyebrow="Informacion ligjor" title={title} breadcrumbs={crumbs}>
+    <p class="lede">Përditësuar më: <Ph value={site.legalDocumentsUpdated} /></p>
+  </PageHero>
+  <section class="section">
+    <div class="container">
+      {
+        !site.legalDocumentsApproved && (
+          <div class="notice legal-draft" role="note">
+            <Icon name="info" />
+            <p>
+              <strong>Draft në rishikim.</strong> Ky dokument është në përgatitje dhe do të përditësohet pas
+              rishikimit përfundimtar. Për çdo pyetje, ju lutemi më kontaktoni.
+            </p>
+          </div>
+        )
+      }
+      <article class="prose legal">
+        <slot />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-draft { max-width: 44rem; margin-bottom: 48px; }
+  .legal :global(h2) { font-size: clamp(1.6rem, 2.6vw, 2rem); }
+</style>

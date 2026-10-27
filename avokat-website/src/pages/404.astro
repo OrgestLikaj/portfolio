@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { routes } from '../config/navigation.ts';
+import { services } from '../config/services.ts';
+import { serviceUrl } from '../config/navigation.ts';
+---
+<BaseLayout title="Faqja nuk u gjet" description="Faqja që kërkuat nuk ekziston ose është zhvendosur." noindex>
+  <section class="section notfound">
+    <div class="container notfound__inner">
+      <p class="eyebrow">Gabim 404</p>
+      <h1>Faqja nuk u gjet</h1>
+      <p class="lede">
+        Faqja që kërkuat nuk ekziston ose është zhvendosur. Mund të ktheheni në kryefaqe ose të zgjidhni një nga
+        lidhjet më poshtë.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href={routes.home}>Kthehu në kryefaqe <Icon name="arrow" class="arrow" /></a>
+        <a class="btn btn--ghost" href={routes.contact}>Kontakti</a>
+      </div>
+      <nav aria-label="Shërbimet" class="notfound__links">
+        <h2 class="notfound__label">Shërbimet</h2>
+        <ul>
+          {services.map((s) => <li><a href={serviceUrl(s.slug)}>{s.title}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound__inner { max-width: 760px; }
+  .notfound h1 { margin-bottom: 24px; }
+  .notfound .lede { margin-bottom: 36px; }
+  .notfound__links { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--stone); }
+  .notfound__label {
+    font-family: var(--font-text); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze); margin-bottom: 16px;
+  }
+  .notfound__links ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 28px; }
+</style>

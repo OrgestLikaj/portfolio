@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingForm from '../components/BookingForm.astro';
+import Icon from '../components/Icon.astro';
+import Ph from '../components/Ph.astro';
+import { routes } from '../config/navigation.ts';
+import { site, confirmed } from '../config/site.ts';
+
+const crumbs = [
+  { label: 'Kryefaqja', href: routes.home },
+  { label: 'Rezervo një konsultë', href: routes.booking },
+];
+const phone = confirmed(site.contact.phoneE164);
+---
+<BaseLayout
+  title="Rezervo një konsultë"
+  description="Dërgoni një kërkesë për konsultë juridike: zgjidhni shërbimin, datën dhe orën e preferuar. Takimi konfirmohet pas kontaktit nga zyra."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    eyebrow="Konsulta juridike"
+    title="Rezervo një konsultë"
+    lede="Zgjidhni shërbimin, datën dhe orën që ju përshtaten. Pas dërgimit të kërkesës do t’ju kontaktoj për të konfirmuar takimin."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="container booking">
+      <div class="booking__form">
+        <BookingForm />
+      </div>
+
+      <aside class="booking__aside" aria-label="Informacion për rezervimin">
+        <div class="booking__box">
+          <h2 class="booking__title">Si funksionon</h2>
+          <ol class="booking__steps">
+            <li><span>01</span> Dërgoni kërkesën me datën dhe orën e preferuar.</li>
+            <li><span>02</span> Ju kontaktoj për të konfirmuar ose për të propozuar një orar tjetër.</li>
+            <li><span>03</span> Takimi konsiderohet i rezervuar vetëm pas konfirmimit.</li>
+          </ol>
+        </div>
+
+        <div class="notice">
+          <Icon name="lock" />
+          <p>
+            <strong>Konfidencialiteti.</strong> Ju lutemi mos dërgoni detaje konfidenciale të çështjes ose
+            dokumente përmes këtij formulari. Ato mund t’i diskutojmë gjatë konsultës.
+          </p>
+        </div>
+
+        <div class="notice">
+          <Icon name="info" />
+          <p>
+            Dërgimi i kërkesës nuk krijon marrëdhënie avokat–klient. Kjo marrëdhënie krijohet vetëm pas
+            marrëveshjes së ndërsjellë për angazhimin.
+          </p>
+        </div>
+
+        {
+          site.consultationFeeNote && (
+            <div class="booking__fee">
+              <h2 class="booking__label">Tarifa e konsultës</h2>
+              <p><Ph value={site.consultationFeeNote} /></p>
+            </div>
+          )
+        }
+
+        <div class="booking__urgent">
+          <h2 class="booking__label">Raste urgjente</h2>
+          <p>
+            Për çështje urgjente, si ndalimi ose arrestimi i një personi, ju lutemi telefononi drejtpërdrejt:
+            {' '}
+            {phone ? <a href={`tel:${phone}`}>{site.contact.phoneDisplay}</a> : <Ph value={site.contact.phoneDisplay} />}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .booking { display: grid; gap: 64px; }
+  @media (min-width: 1000px) {
+    .booking { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 80px; align-items: start; }
+    .booking__aside { position: sticky; top: 112px; }
+  }
+  .booking__aside { display: grid; gap: 20px; }
+  .booking__box { background: var(--ink); color: var(--ivory); padding: 32px; }
+  .booking__title { font-size: 1.75rem; margin-bottom: 20px; }
+  .booking__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; font-size: 0.95rem; color: rgba(246, 242, 234, 0.85); }
+  .booking__steps li { display: grid; grid-template-columns: 32px 1fr; }
+  .booking__steps span { color: var(--bronze-light); font-size: 0.8rem; letter-spacing: 0.08em; padding-top: 3px; }
+  .booking__label {
+    font-family: var(--font-text); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze); margin-bottom: 8px;
+  }
+  .booking__fee, .booking__urgent { padding: 20px 0 0; border-top: 1px solid var(--stone); font-size: 0.95rem; }
+</style>

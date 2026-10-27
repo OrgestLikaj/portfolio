@@ -1,0 +1,344 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroArt from '../components/HeroArt.astro';
+import Icon from '../components/Icon.astro';
+import Ph from '../components/Ph.astro';
+import PortraitFrame from '../components/PortraitFrame.astro';
+import BrandSeal from '../components/BrandSeal.astro';
+import ContactDetails from '../components/ContactDetails.astro';
+import { services } from '../config/services.ts';
+import { routes, serviceUrl } from '../config/navigation.ts';
+import { site, lawyerWord, isPlaceholder } from '../config/site.ts';
+import { practiceLd } from '../lib/seo.ts';
+
+const city = isPlaceholder(site.contact.city) ? null : site.contact.city;
+
+const principles = [
+  {
+    icon: 'lock' as const,
+    title: 'Konfidencialitet',
+    text: 'Gjithçka që më besoni trajtohet me fshehtësinë profesionale që kërkon ushtrimi i profesionit të avokatit.',
+  },
+  {
+    icon: 'shield' as const,
+    title: 'Përkushtim profesional',
+    text: 'Çdo çështje studiohet me kujdes: faktet, dokumentet dhe rrugët ligjore vlerësohen përpara se të ndërmerret një hap.',
+  },
+  {
+    icon: 'info' as const,
+    title: 'Komunikim i qartë',
+    text: 'Ju shpjegoj situatën ligjore me fjalë të thjeshta, duke përfshirë si mundësitë, ashtu edhe rreziqet reale.',
+  },
+  {
+    icon: 'check' as const,
+    title: 'Vëmendje individuale',
+    text: 'Komunikoni drejtpërdrejt me mua. Çështja juaj nuk kalon nëpër një zinxhir ndërmjetësish.',
+  },
+];
+
+const steps = [
+  {
+    title: 'Dërgoni kërkesën',
+    text: 'Plotësoni formularin e rezervimit ose më kontaktoni me telefon apo email.',
+  },
+  {
+    title: 'Konfirmimi',
+    text: 'Ju kontaktoj për të konfirmuar datën, orën dhe mënyrën e takimit.',
+  },
+  {
+    title: 'Konsulta',
+    text: 'Diskutojmë situatën tuaj, dokumentet përkatëse dhe pyetjet që keni.',
+  },
+  {
+    title: 'Hapat e mëtejshëm',
+    text: 'Ju shpjegoj mundësitë ligjore dhe, nëse vendosni të vazhdoni, kushtet e angazhimit.',
+  },
+];
+---
+<BaseLayout
+  rawTitle
+  title={`${site.practiceName} – Av. ${site.lawyerName} | ${lawyerWord.Indef} në Shqipëri`}
+  description="Këshillim juridik dhe përfaqësim ligjor në Shqipëri për individë, familje dhe biznese: çështje penale, civile, administrative dhe tregtare. Rezervoni një konsultë."
+  jsonLd={practiceLd(Astro.site)}
+>
+  <!-- Hero -->
+  <section class="hero on-dark">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">
+          <span>{site.practiceName} · {city ? `${city}, ` : ''}Shqipëri</span>
+        </p>
+        <h1>Këshillim i qartë.<br /><em>Përfaqësim i përkushtuar.</em></h1>
+        <p class="lede">
+          Asistencë juridike për individë, familje dhe biznese në çështje penale, civile, administrative dhe
+          tregtare. Çdo çështje trajtohet personalisht, me konfidencialitet dhe korrektësi profesionale.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--light" href={routes.booking}>Rezervo një konsultë <Icon name="arrow" class="arrow" /></a>
+          <a class="btn btn--ghost-light" href={routes.contact}>Kontakto {lawyerWord.acc}</a>
+        </div>
+      </div>
+      <div class="hero__art">
+        <HeroArt />
+      </div>
+    </div>
+    <div class="container">
+      <ul class="hero__areas" aria-label="Fushat e praktikës">
+        {services.map((s) => <li><a href={serviceUrl(s.slug)}>{s.title}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Hyrje -->
+  <section class="section intro">
+    <div class="container intro__grid">
+      <div class="intro__portrait reveal">
+        {site.portrait.src ? <PortraitFrame /> : <BrandSeal />}
+      </div>
+      <div class="intro__copy">
+        <p class="eyebrow">Rreth {lawyerWord.gen}</p>
+        <h2>Një praktikë ligjore individuale, ku flisni drejtpërdrejt me {lawyerWord.acc} që ndjek çështjen tuaj.</h2>
+        <p class="lede">
+          {site.practiceName} është praktika ligjore e {lawyerWord.gen} {site.lawyerName}.
+          <Ph value="[HYRJE E SHKURTËR PROFESIONALE: 1–2 FJALI PËR FORMIMIN DHE PËRVOJËN E AVOKATIT]" />
+        </p>
+        <p>
+          Çdo çështje trajtohet personalisht, nga takimi i parë deri në përmbyllje. Kjo nënkupton komunikim të
+          drejtpërdrejtë, njohje të plotë të rastit tuaj dhe përgjegjësi të qartë për punën që kryhet.
+        </p>
+        <a class="text-link" href={routes.about}>Më shumë rreth {lawyerWord.gen} <Icon name="arrow" class="arrow" size={16} /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shërbimet -->
+  <section class="section section--ivory" aria-labelledby="sherbimet-titulli">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Shërbimet juridike</p>
+          <h2 id="sherbimet-titulli">Fushat e praktikës</h2>
+        </div>
+        <p class="lede">
+          Asistencë ligjore në fushat kryesore të së drejtës, nga konsulenca e parë deri te përfaqësimi para
+          gjykatës, kur çështja e kërkon.
+        </p>
+      </div>
+
+      <ol class="service-list">
+        {
+          services.map((s, i) => (
+            <li class="reveal">
+              <a href={serviceUrl(s.slug)} class="service-row">
+                <span class="service-row__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="service-row__title">{s.title}</span>
+                <span class="service-row__text">{s.summary}</span>
+                <span class="service-row__arrow" aria-hidden="true"><Icon name="arrow" size={22} /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="services-more">
+        <a class="text-link" href={routes.services}>Të gjitha shërbimet <Icon name="arrow" class="arrow" size={16} /></a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Qasja -->
+  <section class="section section--ink on-dark" aria-labelledby="qasja-titulli">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Qasja ime</p>
+        <h2 id="qasja-titulli">Parime që udhëheqin çdo bashkëpunim</h2>
+      </div>
+      <ul class="principles">
+        {
+          principles.map((p) => (
+            <li class="reveal">
+              <Icon name={p.icon} size={26} />
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Procesi -->
+  <section class="section" aria-labelledby="procesi-titulli">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Si zhvillohet konsulta</p>
+          <h2 id="procesi-titulli">Nga kërkesa e parë deri te hapat e mëtejshëm</h2>
+        </div>
+        <p class="lede">
+          Procesi është i thjeshtë dhe transparent. Ju e dini gjithmonë se çfarë ndodh më pas.
+        </p>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s, i) => (
+            <li class="reveal">
+              <span class="steps__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Rezervimi -->
+  <section class="section section--ivory booking-teaser" aria-labelledby="rezervimi-titulli">
+    <div class="container booking-teaser__grid">
+      <div>
+        <p class="eyebrow">Rezervo një konsultë</p>
+        <h2 id="rezervimi-titulli">Zgjidhni shërbimin, datën dhe orën që ju përshtaten</h2>
+        <p class="lede">
+          Dërgoni një kërkesë për takim në zyrë ose online. Takimi konfirmohet pasi t’ju kontaktoj për të
+          verifikuar disponueshmërinë.
+        </p>
+        <ul class="check-list">
+          <li>Zgjidhni fushën ligjore për të cilën kërkoni ndihmë.</li>
+          <li>Propozoni datën dhe orën që ju përshtatet.</li>
+          <li>Merrni konfirmimin ose një propozim për orar alternativ.</li>
+        </ul>
+      </div>
+      <div class="booking-teaser__card">
+        <h3>Kërkesë për konsultë</h3>
+        <p class="muted">Plotësimi i formularit zgjat rreth dy minuta.</p>
+        <a class="btn" href={routes.booking}>Rezervo një konsultë <Icon name="arrow" class="arrow" /></a>
+        <p class="small muted booking-teaser__note">
+          Ju lutemi mos dërgoni detaje konfidenciale ose dokumente përmes formularit. Ato mund t’i diskutojmë
+          gjatë konsultës.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontakti -->
+  <section class="section" aria-labelledby="kontakti-titulli">
+    <div class="container contact-teaser">
+      <div>
+        <p class="eyebrow">Kontakti</p>
+        <h2 id="kontakti-titulli">Zyra</h2>
+        <p class="lede">
+          Për pyetje të përgjithshme ose për të caktuar një takim, mund të më kontaktoni me telefon, email ose
+          përmes formularit të kontaktit.
+        </p>
+        <a class="btn btn--ghost" href={routes.contact}>Shko te faqja e kontaktit <Icon name="arrow" class="arrow" /></a>
+      </div>
+      <ContactDetails />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    background: var(--ink);
+    padding-top: clamp(56px, 8vw, 112px);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero__grid { display: grid; gap: 48px; align-items: end; }
+  .hero h1 { margin-bottom: 28px; }
+  .hero h1 em { font-style: italic; color: var(--bronze-light); font-weight: 500; }
+  .hero .lede { margin-bottom: 40px; }
+  .hero__art { display: none; }
+  @media (min-width: 960px) {
+    .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 72px; }
+    .hero__art { display: block; align-self: end; margin-bottom: -1px; }
+  }
+  .hero__areas {
+    display: flex; flex-wrap: wrap; gap: 10px 0;
+    list-style: none; margin: clamp(56px, 7vw, 88px) 0 0; padding: 26px 0 30px;
+    border-top: 1px solid rgba(246, 242, 234, 0.14);
+    font-size: 0.88rem; color: rgba(246, 242, 234, 0.72);
+  }
+  .hero__areas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+  .hero__areas li::after { display: none; }
+  @media (min-width: 900px) {
+    .hero__areas { display: flex; gap: 10px 0; }
+    .hero__areas li:not(:last-child)::after { display: inline; content: '·'; margin-inline: 16px; color: var(--bronze-light); }
+  }
+  .hero__areas a { text-decoration: none; }
+
+  /* Hyrje */
+  .intro__grid { display: grid; gap: 56px; align-items: center; }
+  .intro__portrait { max-width: min(420px, calc(100% - 18px)); }
+  @media (max-width: 899px) { .intro__portrait { max-width: 300px; } }
+  .intro__copy h2 { margin-bottom: 28px; }
+  .intro__copy .lede { margin-bottom: 20px; }
+  .intro__copy .text-link { margin-top: 12px; }
+  @media (min-width: 900px) {
+    .intro__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 96px; }
+  }
+
+  /* Lista e shërbimeve */
+  .service-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--stone-dark); }
+  .service-list li { border-bottom: 1px solid var(--stone-dark); }
+  .service-row {
+    display: grid; grid-template-columns: 48px 1fr 32px; gap: 8px 16px; align-items: baseline;
+    padding: 28px 0; text-decoration: none;
+    transition: padding 0.4s var(--ease), background-color 0.4s var(--ease);
+  }
+  .service-row__num { font-size: 0.8rem; letter-spacing: 0.1em; color: var(--bronze); }
+  .service-row__title { font-family: var(--font-display); font-size: clamp(1.55rem, 2.4vw, 2rem); line-height: 1.15; }
+  .service-row__text { grid-column: 2 / 3; color: var(--muted); font-size: 0.98rem; max-width: 36em; }
+  .service-row__arrow { grid-column: 3; grid-row: 1; justify-self: end; color: var(--bronze); transition: transform 0.4s var(--ease); }
+  .service-row:hover { color: var(--ink); background: rgba(255, 255, 255, 0.5); padding-inline: 16px; }
+  .service-row:hover .service-row__arrow { transform: translateX(4px); }
+  @media (min-width: 900px) {
+    .service-row { grid-template-columns: 64px minmax(0, 5fr) minmax(0, 6fr) 40px; padding: 34px 0; }
+    .service-row__text { grid-column: 3; }
+    .service-row__arrow { grid-column: 4; }
+  }
+  .services-more { margin-top: 40px; }
+
+  /* Parimet */
+  .principles {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 1px; background: rgba(246, 242, 234, 0.12);
+    border: 1px solid rgba(246, 242, 234, 0.12);
+  }
+  .principles li { background: var(--ink); padding: clamp(28px, 3vw, 40px); }
+  .principles :global(svg) { color: var(--bronze-light); margin-bottom: 28px; }
+  .principles h3 { margin-bottom: 12px; }
+  .principles p { color: rgba(246, 242, 234, 0.72); font-size: 0.98rem; }
+  @media (min-width: 720px) { .principles { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .principles { grid-template-columns: repeat(4, 1fr); } }
+
+  /* Hapat */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; counter-reset: s; }
+  .steps li { border-top: 1px solid var(--ink); padding-top: 24px; }
+  .steps__num { display: block; font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--bronze); margin-bottom: 18px; }
+  .steps h3 { margin-bottom: 10px; }
+  .steps p { color: var(--muted); }
+  @media (min-width: 720px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .steps { grid-template-columns: repeat(4, 1fr); gap: 32px; } }
+
+  /* Rezervimi */
+  .booking-teaser__grid { display: grid; gap: 48px; align-items: center; }
+  .booking-teaser h2 { margin-bottom: 24px; }
+  .booking-teaser .lede { margin-bottom: 32px; }
+  .booking-teaser__card {
+    background: var(--paper); border: 1px solid var(--stone);
+    padding: clamp(28px, 4vw, 48px);
+    display: grid; gap: 16px; justify-items: start;
+    box-shadow: 0 30px 60px -40px rgba(12, 29, 56, 0.35);
+  }
+  .booking-teaser__card .btn { width: 100%; margin-top: 8px; }
+  .booking-teaser__note { margin: 8px 0 0; }
+  @media (min-width: 900px) { .booking-teaser__grid { grid-template-columns: 7fr 5fr; gap: 96px; } }
+
+  /* Kontakti */
+  .contact-teaser { display: grid; gap: 48px; }
+  .contact-teaser h2 { margin-bottom: 20px; }
+  .contact-teaser .lede { margin-bottom: 32px; }
+  @media (min-width: 900px) { .contact-teaser { grid-template-columns: 1fr 1fr; gap: 96px; } }
+</style>

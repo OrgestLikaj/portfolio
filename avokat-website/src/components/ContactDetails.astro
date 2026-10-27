@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+import Ph from './Ph.astro';
+import { site, confirmed } from '../config/site.ts';
+
+interface Props {
+  dark?: boolean;
+}
+const { dark = false } = Astro.props;
+const phone = confirmed(site.contact.phoneE164);
+const email = confirmed(site.contact.email);
+const directions = site.contact.directionsUrl;
+---
+<dl class:list={['contact-details', { 'contact-details--dark': dark }]}>
+  <div>
+    <dt><Icon name="pin" /> Adresa e zyrës</dt>
+    <dd>
+      <Ph value={site.contact.streetAddress} /><br />
+      <Ph value={site.contact.city} />, {site.contact.country}
+      {
+        directions && (
+          <>
+            <br />
+            <a class="text-link contact-details__dir" href={directions} target="_blank" rel="noopener noreferrer">
+              Udhëzime për të mbërritur <span class="visually-hidden">(hapet në një dritare të re)</span>
+              <Icon name="arrow" class="arrow" size={16} />
+            </a>
+          </>
+        )
+      }
+    </dd>
+  </div>
+  <div>
+    <dt><Icon name="phone" /> Telefoni</dt>
+    <dd>{phone ? <a href={`tel:${phone}`}>{site.contact.phoneDisplay}</a> : <Ph value={site.contact.phoneDisplay} />}</dd>
+  </div>
+  <div>
+    <dt><Icon name="mail" /> Email</dt>
+    <dd>{email ? <a href={`mailto:${email}`}>{email}</a> : <Ph value={site.contact.email} />}</dd>
+  </div>
+  <div>
+    <dt><Icon name="clock" /> Orari</dt>
+    <dd><Ph value={site.contact.officeHours} /></dd>
+  </div>
+</dl>
+
+<style>
+  .contact-details { display: grid; gap: 0; margin: 0; }
+  .contact-details > div { padding: 20px 0; border-top: 1px solid var(--stone); }
+  .contact-details > div:last-child { border-bottom: 1px solid var(--stone); }
+  .contact-details dt {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--bronze); margin-bottom: 6px;
+  }
+  .contact-details dd { margin: 0; font-size: 1.05rem; }
+  .contact-details dd a { text-decoration: none; }
+  .contact-details__dir { margin-top: 10px; font-size: 0.9rem; }
+  .contact-details--dark > div { border-color: rgba(246, 242, 234, 0.14); }
+  .contact-details--dark dt { color: var(--bronze-light); }
+</style>
