@@ -1,0 +1,1 @@
+import{t as e}from"./forms.C_xH7mtt.js";document.querySelectorAll(`form[data-form="booking"]`).forEach(t=>e(t,`booking`));
