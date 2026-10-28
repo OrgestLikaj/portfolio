@@ -1,0 +1,27 @@
+---
+/** Foto e hyrjes së zyrës, që vizitorët ta njohin kur vijnë. */
+import { site } from '../config/site.ts';
+import { withBase } from '../lib/url.ts';
+const { entrance } = site.photos;
+---
+<figure class="entrance">
+  <img
+    src={withBase(entrance.src)}
+    srcset={`${withBase(entrance.srcSmall)} 400w, ${withBase(entrance.src)} 644w`}
+    sizes="(min-width: 1000px) 420px, 90vw"
+    width={entrance.width}
+    height={entrance.height}
+    alt={`Hyrja e zyrës: dera nr. 31 dhe tabela “${site.practiceName} – Av. ${site.lawyerName}”`}
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption>Hyrja e zyrës – dera nr. 31</figcaption>
+</figure>
+
+<style>
+  .entrance { margin: 0; }
+  .entrance img { width: 100%; height: auto; aspect-ratio: 644 / 860; object-fit: cover; }
+  .entrance figcaption {
+    margin-top: 12px; font-size: 0.82rem; letter-spacing: 0.04em; color: var(--muted);
+  }
+</style>

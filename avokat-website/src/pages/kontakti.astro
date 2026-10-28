@@ -5,6 +5,7 @@ import ContactForm from '../components/ContactForm.astro';
 import ContactDetails from '../components/ContactDetails.astro';
 import Icon from '../components/Icon.astro';
 import Ph from '../components/Ph.astro';
+import OfficeEntrance from '../components/OfficeEntrance.astro';
 import { routes } from '../config/navigation.ts';
 import { site, lawyerWord } from '../config/site.ts';
 
@@ -35,6 +36,7 @@ const crumbs = [
         <h2 class="contact__heading">Zyra</h2>
         <p class="contact__name"><Ph value={site.lawyerName} />, {lawyerWord.indef}</p>
         <ContactDetails />
+        <div class="contact__photo"><OfficeEntrance /></div>
         {
           !site.contact.directionsUrl && (
             <p class="small muted contact__map-note">
@@ -68,5 +70,6 @@ const crumbs = [
   .contact__heading { font-size: clamp(1.9rem, 3vw, 2.4rem); margin-bottom: 20px; }
   .contact__name { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 24px; }
   .contact__map-note { margin-top: 20px; }
+  .contact__photo { margin-top: 40px; max-width: 420px; }
   .contact__notice { margin-bottom: 32px; }
 </style>

@@ -1,15 +1,33 @@
 ---
 import { site, isPlaceholder, lawyerWord } from '../config/site.ts';
 import { withBase } from '../lib/url.ts';
+
+interface Props {
+  /** Forma e kornizës: drejtkëndësh (parazgjedhje) ose hark. */
+  shape?: 'rect' | 'arch';
+  /** Ngarkim i menjëhershëm për portretin mbi palosje (hero). */
+  eager?: boolean;
+}
+const { shape = 'rect', eager = false } = Astro.props;
 const hasPortrait = Boolean(site.portrait.src);
 const alt = isPlaceholder(site.lawyerName)
   ? `Portret profesional i ${lawyerWord.gen}`
-  : `${site.lawyerName}, ${lawyerWord.indef}`;
+  : `Av. ${site.lawyerName}, ${lawyerWord.indef}`;
 ---
-<figure class="portrait">
+<figure class:list={['portrait', `portrait--${shape}`]}>
   {
     hasPortrait ? (
-      <img src={withBase(site.portrait.src)} width={site.portrait.width} height={site.portrait.height} alt={alt} loading="lazy" decoding="async" />
+      <img
+        src={withBase(site.portrait.src)}
+        srcset={`${withBase(site.portrait.srcSmall)} 480w, ${withBase(site.portrait.src)} 960w`}
+        sizes="(min-width: 960px) 420px, 80vw"
+        width={site.portrait.width}
+        height={site.portrait.height}
+        alt={alt}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : undefined}
+        decoding="async"
+      />
     ) : (
       <div class="portrait__placeholder">
         <span class="ph" data-placeholder>[PORTRETI PROFESIONAL, NËSE OFROHET]</span>
@@ -19,13 +37,13 @@ const alt = isPlaceholder(site.lawyerName)
 </figure>
 
 <style>
-  .portrait { margin: 0 18px 18px 0; position: relative; }
+  .portrait { margin: 0 18px 18px 0; position: relative; isolation: isolate; }
   .portrait::before {
     content: ''; position: absolute; inset: 18px -18px -18px 18px;
-    border: 1px solid var(--stone-dark); z-index: 0;
+    border: 1px solid var(--stone-dark); z-index: -1;
   }
   .portrait img, .portrait__placeholder {
-    position: relative; z-index: 1; width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+    position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%;
   }
   .portrait__placeholder {
     display: grid; place-items: center; padding: 24px; text-align: center;
@@ -33,4 +51,17 @@ const alt = isPlaceholder(site.lawyerName)
       linear-gradient(160deg, rgba(12, 29, 56, 0.05), rgba(12, 29, 56, 0.12)),
       var(--ivory);
   }
+
+  /* Hark – përsërit motivin arkitekturor të faqes */
+  .portrait--arch img, .portrait--arch .portrait__placeholder {
+    aspect-ratio: 3 / 4;
+    border-radius: 999px 999px 0 0;
+  }
+  .portrait--arch::before {
+    inset: -14px -14px 0 -14px;
+    border-color: rgba(214, 169, 79, 0.55);
+    border-bottom: 0;
+    border-radius: 999px 999px 0 0;
+  }
+  .portrait--arch { margin: 14px 14px 0; }
 </style>

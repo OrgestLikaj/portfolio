@@ -63,6 +63,20 @@ name *Studio Ligjore Gega*, phone *+355 68 201 0636*, email *gentjangega.lawoffi
 
 ---
 
+### Photos
+
+Supplied photos (originals in `brand/photos/`, web versions in `public/images/`, re-encoded so no file metadata is published):
+
+* **Portrait** – homepage hero (arched frame) and About page.
+* **Office entrance** – Contact page and homepage contact section, cropped to the door (no. 31) and brass plaque.
+* **Office interior** – only as a blurred, heavily tinted background behind the homepage hero.
+
+⚠️ The two office photos look digitally generated or heavily edited: the lettering on the glass decals is garbled
+(e.g. the interior shows "SBUDIO LIGJORE GGAA"). I kept that lettering out of view (cropped / blurred). For the
+final site, real unedited photos of the office are preferable, both for credibility and because professional rules
+may restrict misleading advertising. The plaque also reads **"& Collaborators"** while the site describes an
+*individual* practice: confirm which is accurate.
+
 ## 1b. Preview on GitHub Pages
 
 A static preview is published at **https://orgestlikaj.github.io/portfolio/gega-preview/**
@@ -273,7 +287,6 @@ Run `npm run build && npm run audit:placeholders` for the live list. Currently:
 **About page (`src/pages/rreth-avokatit.astro`) and homepage intro**
 * Professional introduction, biography, education/degrees, post-graduate studies, qualifications/training,
   professional experience, professional memberships – **verified facts only**
-* Professional portrait (optional; set `site.portrait` – the homepage shows the seal until a portrait exists)
 
 **Booking (`src/pages/rezervo-konsulte.astro`)**
 * `[INFORMACION PËR TARIFËN E KONSULTËS…]` – consultation fee note, or set `consultationFeeNote: ''` to hide it

@@ -1,15 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroArt from '../components/HeroArt.astro';
 import Icon from '../components/Icon.astro';
 import Ph from '../components/Ph.astro';
 import PortraitFrame from '../components/PortraitFrame.astro';
 import BrandSeal from '../components/BrandSeal.astro';
 import ContactDetails from '../components/ContactDetails.astro';
+import OfficeEntrance from '../components/OfficeEntrance.astro';
 import { services } from '../config/services.ts';
 import { routes, serviceUrl } from '../config/navigation.ts';
 import { site, lawyerWord, isPlaceholder } from '../config/site.ts';
 import { practiceLd } from '../lib/seo.ts';
+import { withBase } from '../lib/url.ts';
 
 const city = isPlaceholder(site.contact.city) ? null : site.contact.city;
 
@@ -63,6 +64,17 @@ const steps = [
 >
   <!-- Hero -->
   <section class="hero on-dark">
+    <img
+      class="hero__bg"
+      src={withBase(site.photos.interior.srcSmall)}
+      srcset={`${withBase(site.photos.interior.srcSmall)} 800w, ${withBase(site.photos.interior.src)} 1254w`}
+      sizes="100vw"
+      width={site.photos.interior.width}
+      height={site.photos.interior.height}
+      alt=""
+      aria-hidden="true"
+      decoding="async"
+    />
     <div class="container hero__grid">
       <div class="hero__copy">
         <p class="eyebrow">
@@ -79,7 +91,7 @@ const steps = [
         </div>
       </div>
       <div class="hero__art">
-        <HeroArt />
+        <PortraitFrame shape="arch" eager />
       </div>
     </div>
     <div class="container">
@@ -93,7 +105,7 @@ const steps = [
   <section class="section intro">
     <div class="container intro__grid">
       <div class="intro__portrait reveal">
-        {site.portrait.src ? <PortraitFrame /> : <BrandSeal />}
+        <BrandSeal />
       </div>
       <div class="intro__copy">
         <p class="eyebrow">Rreth {lawyerWord.gen}</p>
@@ -232,7 +244,10 @@ const steps = [
         </p>
         <a class="btn btn--ghost" href={routes.contact}>Shko te faqja e kontaktit <Icon name="arrow" class="arrow" /></a>
       </div>
-      <ContactDetails />
+      <div class="contact-teaser__details">
+        <ContactDetails />
+        <div class="contact-teaser__photo"><OfficeEntrance /></div>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -244,15 +259,28 @@ const steps = [
     padding-top: clamp(56px, 8vw, 112px);
     position: relative;
     overflow: hidden;
+    isolation: isolate;
+  }
+  /* Foto e zyrës si sfond i zbehur dekorativ, nën një shtresë blu */
+  .hero__bg {
+    position: absolute; inset: 0; z-index: -2;
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.5) blur(3px);
+    transform: scale(1.03);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(12, 29, 56, 0.98) 0%, rgba(12, 29, 56, 0.95) 55%, rgba(12, 29, 56, 0.86) 100%);
   }
   .hero__grid { display: grid; gap: 48px; align-items: end; }
   .hero h1 { margin-bottom: 28px; }
   .hero h1 em { font-style: italic; color: var(--bronze-light); font-weight: 500; }
   .hero .lede { margin-bottom: 40px; }
-  .hero__art { display: none; }
+  .hero__art { max-width: 300px; justify-self: center; width: 100%; }
   @media (min-width: 960px) {
     .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 72px; }
-    .hero__art { display: block; align-self: end; margin-bottom: -1px; }
+    .hero__art { max-width: 420px; align-self: end; margin-bottom: -1px; }
   }
   .hero__areas {
     display: flex; flex-wrap: wrap; gap: 10px 0;
@@ -340,5 +368,6 @@ const steps = [
   .contact-teaser { display: grid; gap: 48px; }
   .contact-teaser h2 { margin-bottom: 20px; }
   .contact-teaser .lede { margin-bottom: 32px; }
+  .contact-teaser__photo { margin-top: 32px; max-width: 360px; }
   @media (min-width: 900px) { .contact-teaser { grid-template-columns: 1fr 1fr; gap: 96px; } }
 </style>

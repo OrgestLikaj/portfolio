@@ -67,11 +67,20 @@ export const site = {
     height: 256,
   },
 
-  /** Portreti profesional (opsional) – p.sh. '/images/portret.jpg'. */
+  /** Portreti profesional (origjinali në brand/photos/). */
   portrait: {
-    src: '',
-    width: 0,
-    height: 0,
+    src: '/images/portret-960.webp',
+    srcSmall: '/images/portret-480.webp',
+    width: 960,
+    height: 1280,
+  },
+
+  /** Fotot e zyrës (origjinalet në brand/photos/). */
+  photos: {
+    /** Hyrja e zyrës me tabelën – prerë pa dekorin e xhamit. */
+    entrance: { src: '/images/zyra-hyrja-644.webp', srcSmall: '/images/zyra-hyrja-400.webp', width: 644, height: 860 },
+    /** Ambienti i brendshëm – përdoret vetëm si sfond i zbehur dekorativ. */
+    interior: { src: '/images/zyra-brenda-1254.webp', srcSmall: '/images/zyra-brenda-800.webp', width: 1254, height: 1254 },
   },
 
   /**
